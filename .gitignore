@@ -1,2 +1,10 @@
 
-build/runnable/release/rcs/account/account.json
+rcs/account/*
+rcs/referencial/*
+rcs/log/*
+rcs/data/*
+build/debug/*
+build/release/*
+build/runnable/*
+doc/*
+cloc-1.64.exe
