@@ -63,7 +63,10 @@ win32 | win64 {
 
     #RCS
     rcs.path    = $${DESTDIR}\rcs
-    rcs.files   += $${OUT_PWD}\..\rcs\*
+    rcs.files   += $${OUT_PWD}\..\rcs\config
+    rcs.files   += $${OUT_PWD}\..\rcs\css
+    rcs.files   += $${OUT_PWD}\..\rcs\icon
+
     INSTALLS += rcs
 
     #RCS
@@ -71,24 +74,24 @@ win32 | win64 {
     sources.files   += $${OUT_PWD}\..\mariongiciel\*
     INSTALLS += sources
 
-    #DEBUG DEP
-    DESTDIR = $${OUT_PWD}\runnable\debug
-    DLLD.path    = $${DESTDIR}
-    DLLD.files   += $${LIBDIR}\bin\Qt5Guid.dll
-    DLLD.files   += $${LIBDIR}\bin\Qt5Networkd.dll
-    DLLD.files   += $${LIBDIR}\bin\Qt5Cored.dll
-    DLLD.files   += $${LIBDIR}\bin\Qt5Widgetsd.dll
-    DLLD.files   += $${LIBDIR}\bin\libstdc++-6.dll
-    DLLD.files   += $${LIBDIR}\bin\libgcc_s_seh-1.dll
-    DLLD.files   += $${LIBDIR}\bin\libwinpthread-1.dll
-    INSTALLS       += DLLD
+#DEBUG DEP
+DESTDIR = $${OUT_PWD}\runnable\debug
+DLLD.path    = $${DESTDIR}
+DLLD.files   += $${LIBDIR}\bin\Qt5Guid.dll
+DLLD.files   += $${LIBDIR}\bin\Qt5Networkd.dll
+DLLD.files   += $${LIBDIR}\bin\Qt5Cored.dll
+DLLD.files   += $${LIBDIR}\bin\Qt5Widgetsd.dll
+DLLD.files   += $${LIBDIR}\bin\libstdc++-6.dll
+DLLD.files   += $${LIBDIR}\bin\libgcc_s_seh-1.dll
+DLLD.files   += $${LIBDIR}\bin\libwinpthread-1.dll
+INSTALLS       += DLLD
 
-    #OPENSSL for WINx64
-    LIBDIR = D:\Qt\Tools\OpenSSL\Win_x64
-    OPENSSLDLL.path    = $${DESTDIR}
-    OPENSSLDLL.files   += $${LIBDIR}\bin\libcrypto-1_1-x64.dll
-    OPENSSLDLL.files   += $${LIBDIR}\bin\libssl-1_1-x64.dll
-    INSTALLS += OPENSSLDLL
+#OPENSSL for WINx64
+LIBDIR = D:\Qt\Tools\OpenSSL\Win_x64
+OPENSSLDLL.path    = $${DESTDIR}
+OPENSSLDLL.files   += $${LIBDIR}\bin\libcrypto-1_1-x64.dll
+OPENSSLDLL.files   += $${LIBDIR}\bin\libssl-1_1-x64.dll
+INSTALLS += OPENSSLDLL
 }
 
 RC_ICONS = api.ico
@@ -123,6 +126,7 @@ HEADERS += \
     core/network/referencial.h \
     core/network/request.h \
     core/network/search.h \
+    core/referencial/referencial.h \
     core/referencialdata.h \
     core/response.h \
     core/searchquery.h \

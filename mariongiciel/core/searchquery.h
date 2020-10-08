@@ -27,6 +27,9 @@ class SearchQuery : public QObject
         SearchMod_E searchMod_e;
         QString currentDir;
 
+    private :
+        void saveData(const QString &data) const;
+
     public :
         explicit SearchQuery(QObject *parent = nullptr);
         ~SearchQuery() noexcept;
@@ -41,26 +44,52 @@ class SearchQuery : public QObject
         void searchFinished(network::SearchContent, QString data);
 };
 
+
 class SearchByRangeMax : public QObject
 {
     Q_OBJECT
 
     private :
-        const int waitingTime = 1000;
-        const int maxRange = 1149;
-        const int rangeJump = 50;
+        struct RangeInfo final {
+            const int rangeMinMax = 1000;
+            const int rangeMaxMax = 1149;
+            const int jumpMax = 150;
+            const int jumpMin = 0;
+        } rangeInfo;
+
+    private :
+        const int waitingTime;
+        int currentJump = rangeInfo.jumpMax;
+        int searchNumber = -1;
+
+    private :
         QTimer *requestTimer;
         network::Search *search;
         network::SearchParam searchParam;
 
     private :
-        void setRange();
+        bool setRange();
+        void initRange();
 
     public :
-        explicit SearchByRangeMax(network::SearchParam searchParam, network::Search *search, QObject *parent = nullptr);
+        explicit SearchByRangeMax(network::SearchParam searchParam, QObject *parent = nullptr);
         ~SearchByRangeMax() noexcept;
 
+    signals :
+        void stepFinished(QString data);
+        void searchFinished();
+
 };
+
+/*
+class SearchByCommune : public QObject
+{
+    private :
+    public :
+        explicit SearchByCommune(QObject *parent = nullptr);
+        ~SearchByCommune() noexcept;
+};
+*/
 
 } // END NAMESPACE mariongiciel::core
 

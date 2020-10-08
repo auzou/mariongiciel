@@ -27,7 +27,7 @@ static inline QByteArray _KEY_ = []()->QByteArray {
         return key256;
 }();
 
-
+// extern C
 
 inline QByteArray encryptAES(const QByteArray &text)
 {

@@ -1,5 +1,5 @@
-#ifndef SEARCH_H
-#define SEARCH_H
+#ifndef SEARCH_NETWORK_H
+#define SEARCH_NETWORK_H
 
 #include "authentication.h"
 
@@ -72,8 +72,9 @@ class Search : public QObject
 
     signals :
         void searchFinished(SearchContent searchContent, QString data);
+        void searchError(QString);
 };
 
 } // END NAMESPACE mariongiciel::core::network
 
-#endif // SEARCH_H
+#endif // SEARCH_NETWORK_H

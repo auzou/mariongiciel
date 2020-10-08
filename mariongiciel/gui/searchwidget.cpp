@@ -29,7 +29,7 @@ mariongiciel::gui::SearchWidget::SearchWidget(QWidget *parent)
         this->searchQuery->setMod(mariongiciel::core::SearchMod_E::_BY_COMMUNE_);
     });
 
-    QRadioButton *modRangeMax = new QRadioButton(QObject::tr("Recherche de 0 à 1137"), this);
+    QRadioButton *modRangeMax = new QRadioButton(QObject::tr("Recherche de 0 à 1149"), this);
     QObject::connect(modRangeMax, &QRadioButton::clicked, [this]()->void {
         this->searchQuery->setMod(mariongiciel::core::SearchMod_E::_BY_RANGE_MAX_);
     });

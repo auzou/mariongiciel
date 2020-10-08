@@ -1,5 +1,5 @@
-#ifndef AUTHENTICATION_H
-#define AUTHENTICATION_H
+#ifndef AUTHENTICATION_NETWORK_H
+#define AUTHENTICATION_NETWORK_H
 #include <QObject>
 #include <QVector>
 #include <QPair>
@@ -21,6 +21,7 @@ struct Session final
     QString tokenType;
     QString token;
 };
+
 
 class Authentication : public QObject
 {
@@ -51,6 +52,20 @@ class Authentication : public QObject
         void authenticationFinished();
 };
 
+/*
+template <class T> class Singleton {
+
+    static Authentication* getInstance(QObject *parent = nullptr){
+        static Authentication *instance = nullptr;
+            if(instance == nullptr && parent != nullptr)
+            {
+                instance = new Authentication(parent);
+            }
+        return instance;
+    };
+};
+*/
+
 
 class AuthSingleton
 {
@@ -64,4 +79,4 @@ class AuthSingleton
 
 } // END NAMESPACE mariongiciel::core::network
 
-#endif // AUTHENTICATION_H
+#endif // AUTHENTICATION_NETWORK_H

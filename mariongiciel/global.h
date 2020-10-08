@@ -45,7 +45,7 @@ namespace mariongiciel::global {
         } // END NAMESPACE css
 
         namespace data {
-            const QString _LOCATION_ = rcs::_LOCATION_ + "data/";
+            const QString _LOCATION_ = rcs::_LOCATION_ + "output/";
         } // END NAMESPACE data
 
         namespace referencial {

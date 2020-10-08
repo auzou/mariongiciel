@@ -59,6 +59,7 @@ void mariongiciel::core::network::Authentication::runAuth()
     request->sendRequest(QNetworkAccessManager::Operation::PostOperation, this->url, this->header, this->body);
 
     QObject::connect(request, &Request::requestFinished, [this](QString content, QString data)->void {
+        Q_UNUSED(content)
         QJsonDocument document = QJsonDocument::fromJson(data.toUtf8());
         QJsonObject mainObject = document.object();
 

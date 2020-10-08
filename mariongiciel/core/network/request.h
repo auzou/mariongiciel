@@ -1,5 +1,5 @@
-#ifndef REQUEST_H
-#define REQUEST_H
+#ifndef REQUEST_NETWORK_H
+#define REQUEST_NETWORK_H
 #include <QNetworkAccessManager>
 #include <QUrlQuery>
 #include <QNetworkReply>
@@ -31,4 +31,4 @@ class Request : public QObject
 
 } // END NAMESPACE mariongiciel::core::network
 
-#endif // REQUEST_H
+#endif // REQUEST_NETWORK_H

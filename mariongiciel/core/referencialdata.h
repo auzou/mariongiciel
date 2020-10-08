@@ -44,6 +44,7 @@ class ReferencialInput : public QObject
         void referencialFinished();
 };
 
+// delete
 class ReferencialOutput : public QObject
 {
     Q_OBJECT

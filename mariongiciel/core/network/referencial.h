@@ -1,5 +1,5 @@
-#ifndef REFERENCIAL_H
-#define REFERENCIAL_H
+#ifndef REFERENCIAL_NETWORK_H
+#define REFERENCIAL_NETWORK_H
 
 #include "authentication.h"
 
@@ -33,4 +33,4 @@ class Referencial : public QObject
 
 } // END NAMESPACE mariongiciel::core::network
 
-#endif // REFERENCIAL_H
+#endif // REFERENCIAL_NETWORK_H

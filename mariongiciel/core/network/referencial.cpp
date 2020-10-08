@@ -48,6 +48,7 @@ void mariongiciel::core::network::Referencial::runReferencial(const QString &ref
     );
 
     QObject::connect(request, &Request::requestFinished, [request, this](QString content, QString data)->void {
+        Q_UNUSED(content)
         request->deleteLater();
         emit referencialFinished(data);
     });

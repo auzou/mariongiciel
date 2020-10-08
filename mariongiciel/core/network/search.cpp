@@ -98,6 +98,11 @@ void mariongiciel::core::network::Search::runSearch()
         searchContent.end = contentList.constLast();
         emit searchFinished(searchContent, data);
     });
+
+    QObject::connect(request, &Request::requestError, [request, this](QString errorMsg)->void {
+        request->deleteLater();
+        emit searchError(errorMsg);
+    });
 }
 
 void mariongiciel::core::network::Search::runSearch(SearchParam searchParam)
