@@ -7,7 +7,7 @@
 
 namespace mariongiciel::core {
 
-enum Type_E {
+enum type_E {
     _REPLACE_ = 0,
     _ADD_     = 1,
     _DELETE_  = 2,

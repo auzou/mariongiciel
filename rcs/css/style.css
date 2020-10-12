@@ -1,32 +1,157 @@
 #main-window {
-    background-color: AliceBlue;
+    background-color: #36393e;
 }
 /************************************************************/
-#account-widget {
-    
-}
-/************************************************************/
-#menu-tool-bar {
 
+#account-widget QLabel {
+    color: white;
 }
+
+#account-widget QPushButton {
+    background-color: #4f5f98;
+    border-radius:5px;
+    min-width: 150px;
+    min-height: 50px;
+}
+
+#account-widget QPushButton:hover {
+    background-color: #7289da;
+}
+
+#account-widget QTabWidget::pane {
+    border: 1px solid #36393e;
+    background: #282b30;
+    color: white;
+}
+
+#account-widget QTabBar::tab {
+    background-color: transparent;
+    min-height: 50px;
+}
+
+#account-widget QTabBar::tab:selected {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,stop: 0 #424549, stop: 0.4 gray,stop: 1 #7289da);
+    min-height: 50px;
+}
+
+
+/************************************************************/
 
 #menu-tool-bar, QToolBar {
-    background-color: rgba(0, 0, 255, 0.1);
+    background-color: #1e2124;
 }
 
 #menu-tool-bar, QToolButton{
+    color:#ffffff;
     width:100%;
 }
+
+#menu-tool-bar, QToolButton:hover{
+    background-color: #7289da;
+    width:100%;
+}
+
+#menu-tool-bar, QToolButton:pressed{
+    background-color: #7289da;
+    border-radius:20px;
+}
+
 /************************************************************/
 #referencial-dialog {
 }
+
 /************************************************************/
-#search-param-manager {
+
+#referencial-widget QTableWidget {
+    color: white; 
+    background: #36393e;
+    border: none;
+}
+
+#referencial-widget QTableWidget::item{ 
+    background-color: #4f5f98; 
+    border-radius: 15px;
+    border: none;
+}
+
+#referencial-widget QTableWidget::item:hover{ 
+    background-color: #4d0000; 
+    border:none;
+}
+
+#referencial-widget QTableCornerButton::section { 
+    background-color: #7289da;
+}
+
+#referencial-widget QHeaderView { 
+    color:white; 
+    background: transparent;
+    border: none;
+}
+
+#referencial-widget QHeaderView::section { 
+    color:white; 
+    background-color:#7289da; 
+}
+
+#referencial-widget QToolButton {
+    background-color: #4f5f98;
+    border-radius:5px;
+    min-width: 150px;
+    min-height: 50px;
+}
+
+#referencial-widget QToolButton:hover {
+    background-color: #7289da;
 }
 /************************************************************/
-#search-widget {
+#search-param-manager QPushButton {
+    background-color: #4f5f98;
+    border-radius:5px;
+    min-width: 150px;
+    min-height: 50px;
 }
+
+#search-param-manager QPushButton:hover {
+    background-color: #7289da;
+}
+
 /************************************************************/
-#select-widget {
+
+#search-widget, QGroupBox, QLabel, QPushButton, QRadioButton, QCheckButton, QSpinBox {
+    color: white;
+    background-color: transparent;
+}
+
+#search-widget QScrollArea QWidget
+{   
+    background-color: #36393e;
+}
+
+#search-widget QScrollArea QGroupBox
+{   
+    background-color: transparent;
+}
+
+
+
+#search-widget QPushButton {
+    background-color: #4f5f98;
+    border-radius:5px;
+    min-width: 150px;
+    min-height: 50px;
+    color: white;
+}
+
+#search-widget QPushButton:hover {
+    background-color: #7289da;
+}
+
+/************************************************************/
+#multi-dropdown{
+    color: white;
+}
+#dropdown label{
+    color: white;
 }
 /************************************************************/

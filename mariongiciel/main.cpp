@@ -15,6 +15,8 @@
 
 #include "core/iomanagement.h"
 
+// test
+#include "core/referencial/referencial.h"
 /**
  * \fn int main (int argc, char *argv[])
  * \brief start the main components

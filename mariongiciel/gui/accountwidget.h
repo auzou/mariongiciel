@@ -10,6 +10,8 @@
 #include <QPushButton>
 #include <QTextEdit>
 #include <QMessageBox>
+#include <QPainter>
+#include <QStyleOption>
 
 #include "../global.h"
 #include "../core/account.h"

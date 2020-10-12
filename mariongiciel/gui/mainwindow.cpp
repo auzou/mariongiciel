@@ -15,8 +15,6 @@ mariongiciel::gui::MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowIcon(QIcon(global::rcs::icon::_API_));
 
-    this->loadCss();
-
     mariongiciel::core::network::AuthSingleton::initInstance(this);
 
     this->menuToolBar = new MenuToolBar(this);
@@ -43,6 +41,8 @@ mariongiciel::gui::MainWindow::MainWindow(QWidget *parent)
     QObject::connect(this->referencialWidget, &ReferencialWidget::referencialChanged, [this]()->void {
         this->searchWidget->refreshMainWidget();
     });
+
+    this->loadCss();
 }
 
 void mariongiciel::gui::MainWindow::loadCss()

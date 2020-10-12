@@ -18,6 +18,7 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QVector>
+#include <QDateTime>
 
 #include "../global.h"
 
@@ -38,6 +39,7 @@ enum class ressourceDirError {
     _MAIN_RCS_ = 0, // RCS not exists (all not exist config/icon/css...)
     _ICON_     = 1, // ICON not exists (your app style is dead)
     _CSS_      = 2, // CSS not exists (your style is dead)
+    //_CONFIG_ = 3,
 };
 
 /**
@@ -117,6 +119,16 @@ class FileManagement
     public :
 
         /**
+          * \fn static bool isExist(const QString &path)
+          * \brief
+          *
+          * \param const QString &path
+          * \return bool
+          */
+        static bool isExist(const QString &path);
+
+
+        /**
           * \fn static const QString readFile(const QString &path)
           * \brief Read file and return the content in const QString
           *
@@ -142,6 +154,34 @@ class FileManagement
           * \return true if append data or false if can't not open file
           */
         static bool writeAppend(const QString &path, const QString &data);
+
+        /**
+          * \fn static bool remove(const QString &path, bool archive = true)
+          * \brief remove/archive file (default archive = true)
+          *
+          * \param const QString &path, bool archive = true
+          * \return bool
+          */
+        static bool remove(const QString &path);
+
+        /**
+          * \fn static bool moveToArchive(const QString &path, const QString &target, bool remove = true)
+          * \brief remove/archive file (default archive = true)
+          *
+          * \param const QString &path, bool archive = true
+          * \return bool
+          */
+        static bool moveToArchive(const QString &path, const QString &target, bool remove = true);
+};
+
+// name version CRLF
+// [date] [level] [localisation:class] [text] CRLF
+
+enum level_E {
+    _ERROR_ = 0,
+    _INFO_  = 1,
+    _WARN_  = 2,
+    _ALERT_ = 3,
 };
 
 /**
@@ -152,12 +192,19 @@ class FileManagement
 class LogManagement
 {
     private :
-        struct LogFormat final {
+        static const QString head();
+        static QString formate(const QString &message, const QString &localisation, const QString &level);
+        static QString getLevelStr(level_E level_e);
 
-        };
     public :
         LogManagement() = delete;
+        ~LogManagement() = delete;
+
+    public :
+        static void log(const QString &message, const QString &localisation, level_E level_e);
+        static void clear(bool archive = true);
 };
+
 
 
 } // END NAMESPACE mariongiciel::core

@@ -37,6 +37,7 @@ mariongiciel::gui::SearchWidget::SearchWidget(QWidget *parent)
     modLayout->addWidget(modNormal);
     modLayout->addWidget(modCommune);
     modLayout->addWidget(modRangeMax);
+    modLayout->addWidget(this->getRunSearchWidget(this));
 
     modBox->setLayout(modLayout);
 
@@ -89,7 +90,6 @@ QWidget *mariongiciel::gui::SearchWidget::getMainWidget()
     mainLayout->addWidget(this->getPublieeDepuisWidget(mainWidget));
     mainLayout->addWidget(this->getMinCreationDateWidget(mainWidget));
     mainLayout->addWidget(this->getMaxCreationDateWidget(mainWidget));
-    mainLayout->addWidget((this->getRunSearchWidget(mainWidget)));
 
     mainWidget->setLayout(mainLayout);
 
@@ -808,14 +808,14 @@ QWidget *mariongiciel::gui::SearchWidget::getRunSearchWidget(QWidget *mainWidget
 {
     QWidget *runWidget = new QWidget(mainWidget);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QHBoxLayout *mainLayout = new QHBoxLayout();
     QPushButton *runButton = new QPushButton(QObject::tr("Executer"), this);
-
+    runButton->setMaximumWidth(QFontMetrics(QFont("Times")).horizontalAdvance(runButton->text()));
     QObject::connect(runButton, &QPushButton::clicked, [this]()->void {
         this->searchQuery->runSearchQuery(this->searchParam);
     });
 
-    mainLayout->addWidget(runButton);
+    mainLayout->addWidget(runButton, Qt::AlignHCenter);
 
     runWidget->setLayout(mainLayout);
 

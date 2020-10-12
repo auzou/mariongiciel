@@ -10,9 +10,6 @@ mariongiciel::gui::AccountWidget::AccountWidget(mariongiciel::core::network::Aut
     this->ongletPole();
     this->ongletMaps();
 
-    // change
-    this->tabWidget->setStyleSheet("QTabBar::tab { min-height: 50px; }");
-
     this->tabWidget->addTab(this->poleWidget, QObject::tr("API Pôle emploi"));
     this->tabWidget->setTabIcon(0, QIcon(global::rcs::icon::_POLE_));
 
@@ -76,7 +73,7 @@ void mariongiciel::gui::AccountWidget::ongletPole()
     this->poleTextEdit->setHtml(QObject::tr("<strong>Informations</strong><br>"
                                             "<em>- Les identifiants ne sont pas visible</em></center><br>"
                                             "<em>- Le boutton \"Sauvegarde\" écrase les identifiants</em>"));
-    this->poleTextEdit->setStyleSheet("QTextEdit{background-color: transparent;color:black;max-height:100px;}");
+    this->poleTextEdit->setStyleSheet("QTextEdit{background-color: transparent;color:white;max-height:100px;}");
     this->poleMainLayout->addWidget(this->poleTextEdit);
 
     // button

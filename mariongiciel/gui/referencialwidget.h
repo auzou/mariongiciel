@@ -5,6 +5,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QToolButton>
+#include <QPainter>
+#include <QPushButton>
 
 #include "../core/network/authentication.h"
 #include "../core/iomanagement.h"
@@ -28,6 +30,7 @@ class ReferencialWidget : public QWidget
 
     public :
         explicit ReferencialWidget(QWidget *parent = nullptr);
+        void paintEvent(QPaintEvent *event) override;
         void setDownloadList();
         ~ReferencialWidget() noexcept;
 

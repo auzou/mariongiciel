@@ -10,6 +10,8 @@ mariongiciel::gui::ReferencialWidget::ReferencialWidget(QWidget *parent)
                   QObject::tr("Chemin"),
                   })
 {
+    this->setObjectName("referencial-widget");
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     QToolButton *downloadButton = new QToolButton(this);
@@ -29,9 +31,19 @@ mariongiciel::gui::ReferencialWidget::ReferencialWidget(QWidget *parent)
     this->setLayout(mainLayout);
 }
 
+void mariongiciel::gui::ReferencialWidget::paintEvent(QPaintEvent *pe)
+{
+    QStyleOption option;
+    option.init(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+};
+
 void mariongiciel::gui::ReferencialWidget::setDownloadList()
 {
     this->downloadList->clear();
+    this->downloadList->setFocusPolicy(Qt::NoFocus);
+
     QVector<QFileInfo> fileInfoList = mariongiciel::core::DirManagement::getFile(mariongiciel::global::rcs::referencial::_LOCATION_);
 
     if(fileInfoList.isEmpty())
@@ -65,6 +77,7 @@ void mariongiciel::gui::ReferencialWidget::setDownloadList()
                     this->downloadList->setItem(i, j, new QTableWidgetItem(fileInfoList[i].path()));
                 break;
             }
+            this->downloadList->setColumnWidth(i, QFontMetrics(QFont("Times")).horizontalAdvance(this->downloadList->item(i,j )->text()));
             this->downloadList->item(i, j)->setFlags(Qt::ItemIsEnabled);
         }
     }

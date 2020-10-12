@@ -15,7 +15,7 @@ mariongiciel::gui::MultiSelectDropDown::MultiSelectDropDown(const int maxSelect,
       mainLayout(new QVBoxLayout(this)),
       dropDown(dropDown)
 {
-    this->setObjectName("select-widget");
+    this->setObjectName("multi-dropdown");
     this->dropDown->setParent(this);
     this->mainLayout->addWidget(dropDown, 0, Qt::AlignTop);
     this->setLayout(this->mainLayout);
@@ -32,9 +32,6 @@ void mariongiciel::gui::MultiSelectDropDown::addCustomWidget(const QString &text
 {
     QWidget *customWidget = new QWidget(this);
     QHBoxLayout *customWidgetLayout = new QHBoxLayout(customWidget);
-    customWidgetLayout->setSpacing(0);
-
-    customWidgetLayout->setAlignment(Qt::AlignCenter);
 
     QPushButton *textButton = new QPushButton(text, customWidget);
     textButton->setEnabled(false);
@@ -113,7 +110,7 @@ mariongiciel::gui::DropDown::DropDown(const QIcon &actionIcon, const QStringList
       customLineEdit(new CustomLineEdit(list, this))
 {
     QVBoxLayout *dropDownLayout = new QVBoxLayout(this);
-    this->setObjectName("drop-down");
+    this->setObjectName("dropdown");
     QAction *button = new QAction(this);
     button->setIcon(QIcon(actionIcon));
     this->customLineEdit->addAction(button, QLineEdit::LeadingPosition);
@@ -122,7 +119,7 @@ mariongiciel::gui::DropDown::DropDown(const QIcon &actionIcon, const QStringList
 
     this->customLineEdit->setPlaceholderText("Recherche");
 
-    dropDownLayout->addWidget(this->customLineEdit);
+    dropDownLayout->addWidget(this->customLineEdit, 0, Qt::AlignTop);
 
     this->setStyleSheet("QLineEdit {"
                                         "border: 2px solid gray;"

@@ -6,8 +6,7 @@ mariongiciel::gui::MenuToolBar::MenuToolBar(QWidget *parent)
     this->setObjectName("menu-tool-bar");
 
     this->setOrientation(Qt::Vertical);
-    this->setMovable(false);
-    this->setMinimumWidth(100);
+
 
     this->accountButton = new QToolButton(this);
     this->accountButton->setText(QObject::tr("Compte"));

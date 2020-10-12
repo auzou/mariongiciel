@@ -8,7 +8,7 @@ void mariongiciel::core::DirManagement::initDirsEnv()
     QVector<QString> dirs {
         mariongiciel::global::rcs::_LOCATION_,
         mariongiciel::global::rcs::css::_LOCATION_,
-        mariongiciel::global::rcs::icon::_LOCATION_,
+        mariongiciel::global::rcs::icon::_LOCATION_,        
     };
 
     for(auto &i : dirs)
@@ -69,6 +69,12 @@ QVector<QFileInfo> mariongiciel::core::DirManagement::getFile(const QString &pat
 
 /********************FileManagement********************/
 
+bool mariongiciel::core::FileManagement::isExist(const QString &path)
+{
+    return QFile::exists(path);
+}
+
+
 const QString mariongiciel::core::FileManagement::readFile(const QString &path)
 {
     QFile file(path);
@@ -105,3 +111,83 @@ bool mariongiciel::core::FileManagement::writeAppend(const QString &path, const 
 
     return true;
 }
+
+bool mariongiciel::core::FileManagement::remove(const QString &path)
+{
+    return true;
+}
+
+bool mariongiciel::core::FileManagement::moveToArchive(const QString &path, const QString &target, bool remove)
+{
+    return true;
+}
+
+
+
+const QString mariongiciel::core::LogManagement::head()
+{
+    return QString(
+                   "\tMarionGiciel:" +
+                   mariongiciel::global::info::_INFO_VERSION_ +
+                   "/" +
+                   mariongiciel::global::info::_INFO_VERSION_STATUS_ +
+                   "\n\n"
+                   );
+}
+
+QString mariongiciel::core::LogManagement::formate(const QString &message, const QString &localisation, const QString &level)
+{
+    return QString("[" + QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd_hh-mm-ss") + "] " +
+                   "[" + localisation +"] " +
+                   "[" + level + "]\t" +
+                   message
+    );
+}
+
+QString mariongiciel::core::LogManagement::getLevelStr(level_E level_e)
+{
+    switch (level_e)
+    {
+        case level_E::_INFO_ : return QString("INFO"); break;
+        case level_E::_WARN_ : return QString("WARNING"); break;
+        case level_E::_ALERT_ : return QString("ALERT"); break;
+        case level_E::_ERROR_ : return QString("ERROR"); break;
+        default : {
+            LogManagement::log(QObject::tr("can't find log level"), "LogManagement", level_E::_ERROR_);
+            return QString("");
+        }
+    }
+}
+
+void mariongiciel::core::LogManagement::clear(bool archive)
+{
+    for(auto &i : DirManagement::getFile(mariongiciel::global::rcs::log::_LOCATION_))
+    {
+        if(!archive)
+        {
+            FileManagement::remove(i.path());
+        } else {
+            DirManagement::isNotExistCreate(mariongiciel::global::rcs::_LOCATION_ + "archive");
+            FileManagement::moveToArchive(i.path(), mariongiciel::global::rcs::_LOCATION_+"archive");
+        }
+    }
+}
+
+void mariongiciel::core::LogManagement::log(const QString &message, const QString &localisation, level_E level_e)
+{
+
+    QString level = LogManagement::getLevelStr(level_e);
+    QString path = global::rcs::log::_LOCATION_ + level + ".txt";
+    if(DirManagement::exist(path))
+    {
+        DirManagement::create(path);
+    }
+
+    if(!FileManagement::isExist(path))
+    {
+        FileManagement::write(path, LogManagement::head());
+    }
+
+    FileManagement::write(path, LogManagement::formate(message, localisation, level));
+}
+

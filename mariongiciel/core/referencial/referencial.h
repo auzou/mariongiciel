@@ -9,27 +9,19 @@
 
 namespace mariongiciel::core::referencial {
 
-struct Commune final {
+struct Communes final {
     QString code;
     QString codeDepartement;
     QString codePostal;
     QString libelle;
 };
 
-/*
-class ReferencialBase : public QObject
-{
-    Q_OBJECT
-
-    private :
-    public :
-        explicit Referencial(QObject *parent = nullptr);
-        ~Referencial();
-
-    private :
-        inline Commune getCommune();
+struct Departements final {
+    QString code;
+    QString libelle;
+    QString regionCode;
+    QString regionLibelle;
 };
-*/
 
 
 } // END NAMESPACE mariongiciel::core::referencial

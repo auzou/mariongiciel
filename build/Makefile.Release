@@ -2138,6 +2138,12 @@ release/.moc/moc_referencialwidget.cpp: ../mariongiciel/gui/referencialwidget.h 
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QToolButton \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qtoolbutton.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/QPainter \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/qpainter.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/qtextoption.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/qpen.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qpushbutton.h \
 		../mariongiciel/core/network/authentication.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QObject \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QVector \
@@ -2192,6 +2198,7 @@ release/.moc/moc_referencialwidget.cpp: ../mariongiciel/gui/referencialwidget.h 
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QDirIterator \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/qdiriterator.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QTextStream \
+		../../../Qt/5.13.2/mingw73_64/include/QtCore/QDateTime \
 		../mariongiciel/gui/referencialdialog.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QDialog \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qdialog.h \
@@ -2813,6 +2820,8 @@ release/.obj/iomanagement.o: ../mariongiciel/core/iomanagement.cpp ../mariongici
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/qsharedpointer_impl.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QFileInfo \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QVector \
+		../../../Qt/5.13.2/mingw73_64/include/QtCore/QDateTime \
+		../../../Qt/5.13.2/mingw73_64/include/QtCore/qdatetime.h \
 		../mariongiciel/global.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QString \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QDebug
@@ -4639,6 +4648,12 @@ release/.obj/referencialwidget.o: ../mariongiciel/gui/referencialwidget.cpp ../m
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QToolButton \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qtoolbutton.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/QPainter \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/qpainter.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/qtextoption.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtGui/qpen.h \
+		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qpushbutton.h \
 		../mariongiciel/core/network/authentication.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QObject \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QVector \
@@ -4693,6 +4708,7 @@ release/.obj/referencialwidget.o: ../mariongiciel/gui/referencialwidget.cpp ../m
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QDirIterator \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/qdiriterator.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtCore/QTextStream \
+		../../../Qt/5.13.2/mingw73_64/include/QtCore/QDateTime \
 		../mariongiciel/gui/referencialdialog.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QDialog \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qdialog.h \
@@ -5336,7 +5352,8 @@ release/.obj/main.o: ../mariongiciel/main.cpp ../../../Qt/5.13.2/mingw73_64/incl
 		../mariongiciel/gui/referencialdialog.h \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QDialog \
 		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/QProgressBar \
-		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qprogressbar.h
+		../../../Qt/5.13.2/mingw73_64/include/QtWidgets/qprogressbar.h \
+		../mariongiciel/core/referencial/referencial.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\.obj\main.o ..\mariongiciel\main.cpp
 
 release/.obj/moc_account.o: release/.moc/moc_account.cpp 
