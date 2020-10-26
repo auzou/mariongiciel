@@ -12,3 +12,4 @@ projet.txt
 mariongiciel/mariongiciel.pro.user
 mariongiciel/gui/dropdown/dropdown.pro.user
 mariongiciel/gui/dropdown/dropdown.pro
+*.csv

@@ -1,5 +1,85 @@
 #include "referencialdata.h"
 
+
+
+mariongiciel::core::Referancial::Referancial(QObject *parent)
+    : QObject(parent),
+      referancialName({
+                        "domaines",
+                        "appellations",
+                        "metiers",
+                        "themes",
+                        "continents",
+                        "pays",
+                        "regions",
+                        "departements",
+                        "communes",
+                        "secteursActivites",
+                        "naturesContrats",
+                        "typesContrats",
+                        "niveauxFormations",
+                        "permis",
+                        "langues",
+      })
+{
+}
+
+mariongiciel::core::Referancial::~Referancial() noexcept
+{
+
+}
+const QVector<QString> mariongiciel::core::Referancial::getReferancialName() const
+{
+    return this->referancialName;
+}
+
+QVector<QMap<QString, QString>> mariongiciel::core::Referancial::getReferancial(Referencial_E referencial_e) const
+{
+    QVector<QMap<QString, QString>> dataOut;
+    if(this->referancialName.size() < referencial_e)
+    {
+        return dataOut;
+    }
+
+    QString fileData = mariongiciel::core::FileManagement::readFile(global::rcs::referencial::_LOCATION_ + referancialName[referencial_e] + ".json");
+    if(fileData.isEmpty())
+    {
+        return dataOut;
+    }
+
+    QJsonDocument doc = QJsonDocument::fromJson(fileData.toUtf8());
+
+    QJsonArray mainArray = doc.array();
+    if(mainArray.isEmpty())
+    {
+        return dataOut;
+    }
+
+
+    for(auto i : mainArray)
+    {
+        QMap<QString, QString> currentData;
+        for(auto y : i.toObject().keys())
+        {
+            if(!i.toObject().value(y).isObject())
+            {
+                currentData.insert(y, i.toObject().value(y).toString());
+            } else {
+                QJsonObject nextObject = i.toObject().value(y).toObject();
+                for(auto z : nextObject.keys())
+                {
+                    currentData.insert(y + "-" + z, nextObject.value(z).toString());
+                }
+            }
+        }
+        dataOut.push_back(currentData);
+    }
+    return dataOut;
+}
+
+
+// **
+
 void mariongiciel::core::ReferencialInput::write(const QString &data)
 {
     if(!QDir(global::rcs::referencial::_LOCATION_).exists())

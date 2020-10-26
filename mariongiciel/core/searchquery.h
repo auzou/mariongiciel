@@ -76,8 +76,8 @@ class SearchByRangeMax : public QObject
         ~SearchByRangeMax() noexcept;
 
     signals :
-        void stepFinished(QString data);
-        void searchFinished();
+        void stepFinished(const QString &data);
+        void searchFinished(const QString &data);
 
 };
 

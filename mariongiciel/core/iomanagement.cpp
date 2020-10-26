@@ -83,7 +83,7 @@ const QString mariongiciel::core::FileManagement::readFile(const QString &path)
         return QString();
     }
 
-    return QString(file.readAll());
+    return QString(QString::fromUtf8(file.readAll()));
 }
 
 bool mariongiciel::core::FileManagement::write(const QString &path, const QString &data)
@@ -93,7 +93,9 @@ bool mariongiciel::core::FileManagement::write(const QString &path, const QStrin
     {
         return false;
     }
+
     QTextStream out(&file);
+    out.setCodec("UTF-8");
     out << data;
 
     return true;
@@ -107,6 +109,7 @@ bool mariongiciel::core::FileManagement::writeAppend(const QString &path, const 
         return false;
     }
     QTextStream out(&file);
+    out.setCodec("UTF-8");
     out << data;
 
     return true;
@@ -114,11 +117,15 @@ bool mariongiciel::core::FileManagement::writeAppend(const QString &path, const 
 
 bool mariongiciel::core::FileManagement::remove(const QString &path)
 {
+    Q_UNUSED(path)
     return true;
 }
 
 bool mariongiciel::core::FileManagement::moveToArchive(const QString &path, const QString &target, bool remove)
 {
+    Q_UNUSED(path)
+    Q_UNUSED(target)
+    Q_UNUSED(remove)
     return true;
 }
 

@@ -126,7 +126,6 @@ HEADERS += \
     core/network/referencial.h \
     core/network/request.h \
     core/network/search.h \
-    core/referencial/referencial.h \
     core/referencialdata.h \
     core/response.h \
     core/searchquery.h \

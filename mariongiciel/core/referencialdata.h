@@ -11,6 +11,7 @@
 
 #include "network/authentication.h"
 #include "network/referencial.h"
+#include "iomanagement.h"
 #include "../global.h"
 
 #ifdef QT_DEBUG
@@ -18,6 +19,39 @@
 #endif
 
 namespace mariongiciel::core {
+
+enum Referencial_E {
+    _DOMAINES_           = 0,
+    _APPELLATIONS_       = 1,
+    _METIERS_            = 2,
+    _THEMES_             = 3,
+    _CONTINENTS_         = 4,
+    _PAYS_               = 5,
+    _REGIONS_            = 6,
+    _DEPARTEMENTS_       = 7,
+    _COMMUNES_           = 8,
+    _SECTEURS_ACTIVITES_ = 9,
+    _NATURES_CONTRATS_   = 10,
+    _TYPES_CONTRATS_     = 11,
+    _NIVEAUX_FORMATIONS_ = 12,
+    _PERMIS_             = 13,
+    _LANGUES_            = 14,
+};
+
+class Referancial : public QObject
+{
+    private :
+        const QVector<QString> referancialName;
+
+    public :
+        explicit Referancial(QObject *parent = nullptr);
+        ~Referancial() noexcept;
+
+    public :
+        const QVector<QString> getReferancialName() const;
+        QVector<QMap<QString, QString>> getReferancial(Referencial_E referencial_e) const;
+};
+
 
 class ReferencialInput : public QObject
 {
@@ -70,7 +104,6 @@ class ReferencialOutput : public QObject
     public :
         explicit ReferencialOutput(QObject *parent = nullptr);
         QStringList getDomaine();
-
         QStringList getAppellations();
         QStringList getMetiers();
         QStringList getThemes();

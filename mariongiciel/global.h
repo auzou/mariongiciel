@@ -61,7 +61,7 @@ namespace mariongiciel::global {
         } // END NAMESPACE archive
 
         namespace config {
-            const QString _LOCATION_ = rcs::_LOCATION_ +"/config";
+            const QString _LOCATION_ = rcs::_LOCATION_ +"config/";
         } // END NAMESPACE config
 
     } // END NAMESPACE rcs

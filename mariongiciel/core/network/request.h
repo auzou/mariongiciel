@@ -29,6 +29,25 @@ class Request : public QObject
         void requestError(QString data);
 };
 
+/*
+class RequestBase : QObject
+{
+    private :
+        QNetworkAccessManager *requestManager;
+        QString url;
+        QVector<QMap<QString, QString>> headers;
+        QUrlParam param;
+        QNetworkAccessManager::Operation operation;
+
+    public :
+        explicit RequestBase(QObject  *parent = nullptr);
+        ~RequestBase() noexcept;
+
+    public :
+
+};
+*/
+
 } // END NAMESPACE mariongiciel::core::network
 
 #endif // REQUEST_NETWORK_H

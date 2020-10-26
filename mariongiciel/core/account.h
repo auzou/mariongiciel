@@ -16,10 +16,10 @@ namespace mariongiciel::core {
 
 struct AccountData final
 {
-    QString uId;
+    //QString uId;
     QString key;
     QString id;
-    QString realms;
+    //QString realms;
 };
 
 class Account : public QObject

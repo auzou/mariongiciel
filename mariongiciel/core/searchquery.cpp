@@ -5,7 +5,7 @@ void mariongiciel::core::SearchQuery::saveData(const QString &data) const
     SearchResponse response;
     response.setPath(this->currentDir);
     response.cutSearchResponse(data);
-    response.runConversionProcess();
+    //response.runConversionProcess();
 }
 
 
@@ -40,11 +40,12 @@ void mariongiciel::core::SearchQuery::runSearchQuery(const network::SearchParam 
         case SearchMod_E::_BY_RANGE_MAX_ :
         {
             SearchByRangeMax *searchByRangMax = new SearchByRangeMax(this->searchParam, this);
-            QObject::connect(searchByRangMax, &SearchByRangeMax::stepFinished, [this](QString data)->void {
+            QObject::connect(searchByRangMax, &SearchByRangeMax::stepFinished, [this](const QString &data)->void {
                 this->saveData(data);
             });
 
-            QObject::connect(searchByRangMax, &SearchByRangeMax::searchFinished, [searchByRangMax]()->void {
+            QObject::connect(searchByRangMax, &SearchByRangeMax::searchFinished, [this, searchByRangMax](const QString &data)->void {
+                this->saveData(data);
                 searchByRangMax->deleteLater();
             });
         }
@@ -172,7 +173,7 @@ mariongiciel::core::SearchByRangeMax::SearchByRangeMax(
                 emit stepFinished(data);
                 this->requestTimer->start(this->waitingTime);
             } else {
-                emit searchFinished();
+                emit searchFinished(data);
                 this->requestTimer->stop();
             }
         }

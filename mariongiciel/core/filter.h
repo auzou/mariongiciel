@@ -1,5 +1,10 @@
 #ifndef FILTER_H
 #define FILTER_H
+#include <QObject>
+
+#include "../global.h"
+#include "iomanagement.h"
+#include "response.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -7,20 +12,21 @@
 
 namespace mariongiciel::core {
 
-enum type_E {
-    _REPLACE_ = 0,
-    _ADD_     = 1,
-    _DELETE_  = 2,
+class Filter : public QObject
+{
+    private :
+        QString path;
+        QJsonObject filterObject;
+
+    public :
+        explicit Filter(const QString &path, QObject *parent = nullptr);
+        ~Filter() noexcept;
+
+    public :
+        void addFilterReplace(const QString &columnName, QPair<QString, QString> replaceData);
+        void removeFilter(const QString &columnName);
+        QString getFilter(const QString &columnName, const QString &value);
 };
-
-// filter csv
-// type replace
-// type add
-// delete
-
-// container filter
-// add filter to CSV process
-
 
 } // END NAMESPACE mariongiciel::core
 

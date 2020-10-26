@@ -15,8 +15,6 @@
 
 #include "core/iomanagement.h"
 
-// test
-#include "core/referencial/referencial.h"
 /**
  * \fn int main (int argc, char *argv[])
  * \brief start the main components
@@ -24,6 +22,9 @@
  * \param The arguments passed by the system
  * \return int - comes from QApplication::exec() which is 0 if exit() is called via quit()
  */
+
+#include "core/filter.h"
+#include "global.h"
 
 int main (int argc, char *argv[])
 {

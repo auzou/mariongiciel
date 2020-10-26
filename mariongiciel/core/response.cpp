@@ -2,101 +2,21 @@
 
 
 mariongiciel::core::SearchResponse::SearchResponse(QObject *parent)
-    : QObject(parent), tagStr(QStringLiteral("-part_"))
+    : QObject(parent)
 {
-    this->tag = 1;
 }
 
 void mariongiciel::core::SearchResponse::cutSearchResponse(const QString &data)
 {
-    this->createDir();
-
     QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
     QJsonObject mainObject = doc.object();
-
-    this->createFilterFile(QJsonDocument(mainObject["filtresPossibles"].toArray()).toJson());
-    this->createCompactFile(QJsonDocument(mainObject["resultats"].toArray()).toJson());
-    this->createIndentedFile(QJsonDocument(mainObject["resultats"].toArray()).toJson());
-
-    this->runConversionProcess();
+    QJsonArray mainArray = mainObject["resultats"].toArray();
+    //this->createFilterFile(QJsonDocument(mainObject["filtresPossibles"].toArray()).toJson());
+    this->runConversionProcess(mainArray);
 }
 
-void mariongiciel::core::SearchResponse::createDir()
+void mariongiciel::core::SearchResponse::runConversionProcess(const QJsonArray &mainArray)
 {
-    if(!QDir(global::rcs::data::_LOCATION_).exists())
-    {
-        QDir().mkdir(global::rcs::data::_LOCATION_);
-    }
-
-    if(!QDir(global::rcs::data::_LOCATION_+this->path).exists())
-    {
-        QDir().mkdir(global::rcs::data::_LOCATION_+this->path);
-    }
-
-}
-
-void mariongiciel::core::SearchResponse::createCompactFile(const QString &data)
-{
-    QFile file(global::rcs::data::_LOCATION_+ this->path
-                        + "/compact_data" + this->tagStr
-                 + QString::number(this->tag) + ".json");
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-
-    QTextStream outStream(&file);
-    outStream << QJsonDocument::fromJson(data.toUtf8()).toJson(QJsonDocument::Compact);
-    file.close();
-}
-
-void mariongiciel::core::SearchResponse::createIndentedFile(const QString &data)
-{
-    QFile file(global::rcs::data::_LOCATION_+ this->path
-                       + "/indented_data" + this->tagStr
-                + QString::number(this->tag) + ".json");
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-
-    QTextStream outStream(&file);
-    outStream << QJsonDocument::fromJson(data.toUtf8()).toJson(QJsonDocument::Indented);
-    file.close();
-}
-
-void mariongiciel::core::SearchResponse::createFilterFile(const QString &data)
-{
-    QFile file(global::rcs::data::_LOCATION_+ this->path + "/filter.json");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-
-    QTextStream outStream(&file);
-    outStream << QJsonDocument::fromJson(data.toUtf8()).toJson(QJsonDocument::Indented);
-    file.close();
-}
-
-void mariongiciel::core::SearchResponse::runConversionProcess()
-{
-    QFile file(global::rcs::data::_LOCATION_+ this->path
-                       + "/compact_data" + this->tagStr
-                + QString::number(this->tag) + ".json");
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        return;
-    }
-    QTextStream out(&file);
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
-    QJsonDocument doc = QJsonDocument::fromJson(QString(out.readAll()).toUtf8());
-
-    file.close();
-    QJsonArray mainArray = doc.array();
     ConversionProcess conversionProcess;
 
     this->appendToCSV(conversionProcess.getColumnName());
@@ -108,30 +28,13 @@ void mariongiciel::core::SearchResponse::runConversionProcess()
 
 void mariongiciel::core::SearchResponse::appendToCSV(const QString &data)
 {
-    QFile file(global::rcs::data::_LOCATION_+ this->path + "/final.csv");
-    if (!file.open(QFile::Text | QIODevice::Append))
-    {
-        return;
-    }
-
-    QTextStream outStream(&file);
-    outStream << data.toUtf8();
-    file.close();
-}
-
-void mariongiciel::core::SearchResponse::setTag(const int tag)
-{
-    this->tag = tag;
+    mariongiciel::core::DirManagement::isNotExistCreate(global::rcs::data::_LOCATION_+ this->path);
+    mariongiciel::core::FileManagement::writeAppend(global::rcs::data::_LOCATION_+ this->path + "/final.csv", data.toUtf8());
 }
 
 void mariongiciel::core::SearchResponse::setPath(const QString &path)
 {
     this->path = path;
-}
-
-int mariongiciel::core::SearchResponse::getTag() const
-{
-    return this->tag;
 }
 
 QString mariongiciel::core::SearchResponse::getPath() const
@@ -304,6 +207,11 @@ void mariongiciel::core::ConversionProcess::clearColumnRow()
     };
 }
 
+QMap<QString, QString> mariongiciel::core::ConversionProcess::getColumnAndRow()
+{
+    return this->columnAndRow;
+}
+
 QString mariongiciel::core::ConversionProcess::getColumnName()
 {
     QString column = "";
@@ -325,7 +233,11 @@ inline void  mariongiciel::core::ConversionProcess::addRow(const QString &keyRow
 {
     if(currentObject.value(keyObject).isString())
     {
-        this->columnAndRow[keyRow] = this->getCSVText(currentObject.value(keyObject).toString());
+        mariongiciel::core::Filter filter(mariongiciel::global::rcs::config::_LOCATION_+"/name.json");
+        qDebug()<<keyRow;
+        this->columnAndRow[keyRow] = this->getCSVText(filter.getFilter(keyRow, currentObject.value(keyObject).toString()));
+
+        //this->columnAndRow[keyRow] = this->getCSVText(currentObject.value(keyObject).toString());
     }
 
     if(currentObject.value(keyObject).isDouble())

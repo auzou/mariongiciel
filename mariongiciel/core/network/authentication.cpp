@@ -5,7 +5,8 @@ mariongiciel::core::network::Authentication::Authentication(QObject *parent)
 {
     this->sessionValid = false;
 
-    this->url = "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?";
+    this->url = "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?realm=/partenaire";
+
     this->header = {
         {"Content-Type", "application/x-www-form-urlencoded"},
     };
@@ -28,7 +29,7 @@ void mariongiciel::core::network::Authentication::refreshAccount()
     mariongiciel::core::Account account;
     mariongiciel::core::AccountData accountData = account.getAccountData();
     this->body = {
-        {"realm", "/partenaire"},
+        //{"realm", "/partenaire"},
         {"grant_type", "client_credentials"},
         {"client_id", accountData.id},
         {"client_secret", accountData.key},

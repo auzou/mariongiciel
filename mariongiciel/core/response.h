@@ -11,6 +11,8 @@
 
 #include "../global.h"
 #include "utility.h"
+#include "iomanagement.h"
+#include "filter.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -25,25 +27,16 @@ class SearchResponse : public QObject
     Q_OBJECT
 
     private :
-        int tag;
         QString path;
-        const QString tagStr;
 
     public :
         explicit SearchResponse(QObject *parent = nullptr);
 
         void cutSearchResponse(const QString &data);
-        void createDir();
-        void createCompactFile(const QString &data);
-        void createIndentedFile(const QString &data);
-        void createFilterFile(const QString &data);
-
-        void runConversionProcess();
+        void runConversionProcess(const QJsonArray &mainArray);
         void appendToCSV(const QString &data);
 
-        void setTag(const int tag);
         void setPath(const QString &path);
-        int getTag() const;
         QString getPath() const;
 
         virtual ~SearchResponse() noexcept;
@@ -64,6 +57,7 @@ class ConversionProcess : public QObject
     public :
         explicit ConversionProcess(QObject *parent = nullptr);
         QString getColumnName();
+        QMap<QString, QString> getColumnAndRow();
         inline QString getCSVText(const QString &str);
         inline void addRow(const QString &keyRow, const QString &keyObject, const QJsonObject &currentObject);
         QString getCSVData(const QJsonObject &processObject);
