@@ -15,6 +15,7 @@
 
 #include "dropdown/dropdown.h"
 #include "searchparammanager.h"
+#include "filterdialog.h"
 #include "../core/referencialdata.h"
 #include "../core/searchquery.h"
 
@@ -27,6 +28,9 @@ namespace mariongiciel::gui {
 class SearchWidget : public QWidget
 {
     Q_OBJECT
+
+    private :
+        QString currentFilterPath;
 
     private :
         QScrollArea *scrollArea;

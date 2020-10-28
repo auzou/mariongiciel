@@ -28,9 +28,10 @@ class SearchResponse : public QObject
 
     private :
         QString path;
+        Filter *filter;
 
     public :
-        explicit SearchResponse(QObject *parent = nullptr);
+        explicit SearchResponse(Filter *filter, QObject *parent = nullptr);
 
         void cutSearchResponse(const QString &data);
         void runConversionProcess(const QJsonArray &mainArray);
@@ -52,10 +53,12 @@ class ConversionProcess : public QObject
 
     private :
         QMap<QString, QString> columnAndRow;
+        Filter *filter;
         void clearColumnRow();
 
     public :
         explicit ConversionProcess(QObject *parent = nullptr);
+        explicit ConversionProcess(Filter *filter, QObject *parent = nullptr);
         QString getColumnName();
         QMap<QString, QString> getColumnAndRow();
         inline QString getCSVText(const QString &str);

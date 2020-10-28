@@ -23,9 +23,6 @@
  * \return int - comes from QApplication::exec() which is 0 if exit() is called via quit()
  */
 
-#include "core/filter.h"
-#include "global.h"
-
 int main (int argc, char *argv[])
 {
     QApplication app(argc, argv);

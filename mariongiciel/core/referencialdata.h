@@ -40,6 +40,8 @@ enum Referencial_E {
 
 class Referancial : public QObject
 {
+    Q_OBJECT
+
     private :
         const QVector<QString> referancialName;
 

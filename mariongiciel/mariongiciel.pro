@@ -109,6 +109,8 @@ SOURCES += \
     core/searchquery.cpp \
     gui/accountwidget.cpp \
     gui/dropdown/dropdown.cpp \
+    gui/filterdialog.cpp \
+    gui/listview/customitem.cpp \
     gui/mainwindow.cpp \
     gui/menutoolbar.cpp \
     gui/referencialdialog.cpp \
@@ -133,6 +135,8 @@ HEADERS += \
     global.h \
     gui/accountwidget.h \
     gui/dropdown/dropdown.h \
+    gui/filterdialog.h \
+    gui/listview/customitem.h \
     gui/mainwindow.h \
     gui/menutoolbar.h \
     gui/referencialdialog.h \

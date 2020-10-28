@@ -117,8 +117,14 @@ bool mariongiciel::core::FileManagement::writeAppend(const QString &path, const 
 
 bool mariongiciel::core::FileManagement::remove(const QString &path)
 {
-    Q_UNUSED(path)
-    return true;
+    if(FileManagement::isExist(path))
+    {
+        if(QFile::remove(path))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool mariongiciel::core::FileManagement::moveToArchive(const QString &path, const QString &target, bool remove)

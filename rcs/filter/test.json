@@ -1,0 +1,14 @@
+{
+    "replace": [
+        {
+            "by": "CDD2",
+            "data": "CDD",
+            "name": "typeContrat"
+        },
+        {
+            "by": "CDI2",
+            "data": "CDI",
+            "name": "typeContrat"
+        }
+    ]
+}

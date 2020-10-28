@@ -10,6 +10,8 @@ debug/.obj/response.o
 debug/.obj/searchquery.o
 debug/.obj/accountwidget.o
 debug/.obj/dropdown.o
+debug/.obj/filterdialog.o
+debug/.obj/customitem.o
 debug/.obj/mainwindow.o
 debug/.obj/menutoolbar.o
 debug/.obj/referencialdialog.o
@@ -18,6 +20,7 @@ debug/.obj/searchparammanager.o
 debug/.obj/searchwidget.o
 debug/.obj/main.o
 debug/.obj/moc_account.o
+debug/.obj/moc_filter.o
 debug/.obj/moc_authentication.o
 debug/.obj/moc_referencial.o
 debug/.obj/moc_request.o
@@ -27,6 +30,8 @@ debug/.obj/moc_response.o
 debug/.obj/moc_searchquery.o
 debug/.obj/moc_accountwidget.o
 debug/.obj/moc_dropdown.o
+debug/.obj/moc_filterdialog.o
+debug/.obj/moc_customitem.o
 debug/.obj/moc_mainwindow.o
 debug/.obj/moc_menutoolbar.o
 debug/.obj/moc_referencialdialog.o

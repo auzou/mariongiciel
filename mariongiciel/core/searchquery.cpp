@@ -2,10 +2,9 @@
 
 void mariongiciel::core::SearchQuery::saveData(const QString &data) const
 {
-    SearchResponse response;
+    SearchResponse response(this->filter);
     response.setPath(this->currentDir);
     response.cutSearchResponse(data);
-    //response.runConversionProcess();
 }
 
 
@@ -14,6 +13,7 @@ mariongiciel::core::SearchQuery::SearchQuery(QObject *parent)
       search(new network::Search(this)),
       searchMod_e(SearchMod_E::_NORMAL_)
 {
+    this->filter = new Filter(this);
     QObject::connect(this->search, &network::Search::searchFinished, this, &SearchQuery::searchFinished);
 }
 
@@ -23,8 +23,10 @@ mariongiciel::core::SearchQuery::~SearchQuery() noexcept
 }
 
 
-void mariongiciel::core::SearchQuery::runSearchQuery(const network::SearchParam &searchParam)
+void mariongiciel::core::SearchQuery::runSearchQuery(const QString &filterName, const network::SearchParam &searchParam)
 {
+    this->filter->setFilter(filterName);
+
     this->searchParam = searchParam;
     this->currentDir = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd_hh-mm-ss");
     switch(this->searchMod_e)
@@ -34,7 +36,20 @@ void mariongiciel::core::SearchQuery::runSearchQuery(const network::SearchParam 
         break;
         case SearchMod_E::_BY_COMMUNE_ :
         {
-
+            if(!this->searchParam.departement.isEmpty())
+            {
+                SearchByCommune *searchByCommun = new SearchByCommune(this->searchParam, this);
+                QObject::connect(searchByCommun, &SearchByCommune::subStepFinished, [this](const QString &data)->void {
+                   this->saveData(data);
+                });
+                QObject::connect(searchByCommun, &SearchByCommune::stepFinished, [this](const QString &data)->void {
+                   this->saveData(data);
+                });
+                QObject::connect(searchByCommun, &SearchByCommune::searchFinished, [searchByCommun]()->void {
+                   searchByCommun->deleteLater();
+                });
+                searchByCommun->run();
+            }
         }
         break;
         case SearchMod_E::_BY_RANGE_MAX_ :
@@ -189,4 +204,49 @@ mariongiciel::core::SearchByRangeMax::~SearchByRangeMax() noexcept
 {
 
 }
+
+mariongiciel::core::SearchByCommune::SearchByCommune(network::SearchParam searchParam, QObject *parent)
+    : QObject(parent), searchParam(searchParam), cursor(0)
+{
+    this->departement = searchParam.departement;
+    this->searchParam.distance = 0;
+    this->searchParam.departement = "";
+    Referancial ref;
+    auto refData = ref.getReferancial(Referencial_E::_COMMUNES_);
+    for(auto &i : refData)
+    {
+        if(i["codeDepartement"] == this->departement)
+        {
+            this->communeVector.push_back(i["code"]);
+        }
+    }
+}
+
+mariongiciel::core::SearchByCommune::~SearchByCommune() noexcept
+{
+
+}
+
+void mariongiciel::core::SearchByCommune::run()
+{
+    if(this->cursor < this->communeVector.size())
+    {
+        this->searchParam.commune = this->communeVector[this->cursor];
+    } else {
+         emit searchFinished();
+    }
+    SearchByRangeMax *searchByRangeMax = new SearchByRangeMax(this->searchParam, this);
+
+    QObject::connect(searchByRangeMax, &SearchByRangeMax::stepFinished, [this](const QString &data)->void {
+        emit subStepFinished(data);
+    });
+
+    QObject::connect(searchByRangeMax, &SearchByRangeMax::searchFinished, [this, searchByRangeMax](const QString &data)->void {
+        emit stepFinished(data);
+        searchByRangeMax->deleteLater();
+        this->cursor++;
+        this->run();
+    });
+}
+
 

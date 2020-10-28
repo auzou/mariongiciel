@@ -1,9 +1,10 @@
 #include "response.h"
 
 
-mariongiciel::core::SearchResponse::SearchResponse(QObject *parent)
-    : QObject(parent)
+mariongiciel::core::SearchResponse::SearchResponse(Filter *filter, QObject *parent)
+    : QObject(parent), filter(filter)
 {
+
 }
 
 void mariongiciel::core::SearchResponse::cutSearchResponse(const QString &data)
@@ -17,7 +18,7 @@ void mariongiciel::core::SearchResponse::cutSearchResponse(const QString &data)
 
 void mariongiciel::core::SearchResponse::runConversionProcess(const QJsonArray &mainArray)
 {
-    ConversionProcess conversionProcess;
+    ConversionProcess conversionProcess(this->filter);
 
     this->appendToCSV(conversionProcess.getColumnName());
     for(int i =0; i < mainArray.count(); i++)
@@ -49,6 +50,12 @@ mariongiciel::core::SearchResponse::~SearchResponse() noexcept
 
 mariongiciel::core::ConversionProcess::ConversionProcess(QObject *parent)
     : QObject(parent)
+{
+    this->clearColumnRow();
+}
+
+mariongiciel::core::ConversionProcess::ConversionProcess(Filter *filter, QObject *parent)
+    : QObject(parent), filter(filter)
 {
     this->clearColumnRow();
 }
@@ -233,11 +240,7 @@ inline void  mariongiciel::core::ConversionProcess::addRow(const QString &keyRow
 {
     if(currentObject.value(keyObject).isString())
     {
-        mariongiciel::core::Filter filter(mariongiciel::global::rcs::config::_LOCATION_+"/name.json");
-        qDebug()<<keyRow;
-        this->columnAndRow[keyRow] = this->getCSVText(filter.getFilter(keyRow, currentObject.value(keyObject).toString()));
-
-        //this->columnAndRow[keyRow] = this->getCSVText(currentObject.value(keyObject).toString());
+        this->columnAndRow[keyRow] = this->getCSVText(this->filter->getFilter(keyRow, currentObject.value(keyObject).toString()));
     }
 
     if(currentObject.value(keyObject).isDouble())

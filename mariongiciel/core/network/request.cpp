@@ -39,6 +39,7 @@ void mariongiciel::core::network::Request::sendRequest(
 #endif
             emit requestError(reply->errorString());
         } else{
+            qDebug()<< QString(reply->rawHeader("Content-Range"));
             emit requestFinished(QString(reply->rawHeader("Content-Range")), reply->readAll());
         }
     });

@@ -10,6 +10,8 @@ release/.obj/response.o
 release/.obj/searchquery.o
 release/.obj/accountwidget.o
 release/.obj/dropdown.o
+release/.obj/filterdialog.o
+release/.obj/customitem.o
 release/.obj/mainwindow.o
 release/.obj/menutoolbar.o
 release/.obj/referencialdialog.o
@@ -18,6 +20,7 @@ release/.obj/searchparammanager.o
 release/.obj/searchwidget.o
 release/.obj/main.o
 release/.obj/moc_account.o
+release/.obj/moc_filter.o
 release/.obj/moc_authentication.o
 release/.obj/moc_referencial.o
 release/.obj/moc_request.o
@@ -27,6 +30,8 @@ release/.obj/moc_response.o
 release/.obj/moc_searchquery.o
 release/.obj/moc_accountwidget.o
 release/.obj/moc_dropdown.o
+release/.obj/moc_filterdialog.o
+release/.obj/moc_customitem.o
 release/.obj/moc_mainwindow.o
 release/.obj/moc_menutoolbar.o
 release/.obj/moc_referencialdialog.o

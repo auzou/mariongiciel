@@ -41,7 +41,30 @@ mariongiciel::gui::SearchWidget::SearchWidget(QWidget *parent)
 
     modBox->setLayout(modLayout);
 
+    QHBoxLayout *filterLayout = new QHBoxLayout();
+
+    QPushButton *filterButton = new QPushButton(QObject::tr("Filtre"), this);
+    filterLayout->addWidget(filterButton);
+
+    QLabel *filterLabel = new QLabel(QObject::tr("Aucun filtre"), this);
+    filterLayout->addWidget(filterLabel);
+
+    QObject::connect(filterButton, &QPushButton::clicked, [this, filterLabel]()->void {
+           FilterDialog filterDialog(filterLabel->text());
+           filterDialog.exec();
+           filterLabel->setText(filterDialog.getFilterName());
+           if(filterLabel->text() == "Aucun filtre")
+           {
+                this->currentFilterPath = "";
+           } else {
+               this->currentFilterPath = filterLabel->text();
+           }
+    });
+
+
+
     mainLayout->addWidget(this->searchParamManager);
+    mainLayout->addLayout(filterLayout);
     mainLayout->addWidget(modBox);
     mainLayout->addWidget(this->scrollArea);
     this->refreshMainWidget();
@@ -812,7 +835,7 @@ QWidget *mariongiciel::gui::SearchWidget::getRunSearchWidget(QWidget *mainWidget
     QPushButton *runButton = new QPushButton(QObject::tr("Executer"), this);
     runButton->setMaximumWidth(QFontMetrics(QFont("Times")).horizontalAdvance(runButton->text()));
     QObject::connect(runButton, &QPushButton::clicked, [this]()->void {
-        this->searchQuery->runSearchQuery(this->searchParam);
+        this->searchQuery->runSearchQuery(this->currentFilterPath, this->searchParam);
     });
 
     mainLayout->addWidget(runButton, Qt::AlignHCenter);

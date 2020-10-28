@@ -31,7 +31,7 @@ mariongiciel::gui::ReferencialWidget::ReferencialWidget(QWidget *parent)
     this->setLayout(mainLayout);
 }
 
-void mariongiciel::gui::ReferencialWidget::paintEvent(QPaintEvent *pe)
+void mariongiciel::gui::ReferencialWidget::paintEvent(QPaintEvent *)
 {
     QStyleOption option;
     option.init(this);

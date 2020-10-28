@@ -36,7 +36,9 @@ namespace mariongiciel::global {
             const QString _REMOVE_ = _LOCATION_ + "remove_512.png";
             const QString _DOWNLOAD_ = _LOCATION_ + "download_512.png";
             const QString _ACTION_ = _LOCATION_ + "action_512.png";
-
+            const QString _EDIT_ = _LOCATION_ + "edit_512.png";
+            const QString _DOWN_ARROW_ = _LOCATION_ + "down_arrow_512.png";
+            const QString _LEFT_ARROW_ = _LOCATION_ + "left_arrow_512.png";
         } // END NAMESPACE icon
 
         namespace css {
@@ -62,6 +64,10 @@ namespace mariongiciel::global {
 
         namespace config {
             const QString _LOCATION_ = rcs::_LOCATION_ +"config/";
+        } // END NAMESPACE config
+
+        namespace filter {
+            const QString _LOCATION_ = rcs::_LOCATION_ +"filter/";
         } // END NAMESPACE config
 
     } // END NAMESPACE rcs

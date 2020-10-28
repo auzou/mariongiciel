@@ -26,6 +26,7 @@ class SearchQuery : public QObject
         network::SearchParam searchParam;
         SearchMod_E searchMod_e;
         QString currentDir;
+        Filter *filter;
 
     private :
         void saveData(const QString &data) const;
@@ -35,7 +36,7 @@ class SearchQuery : public QObject
         ~SearchQuery() noexcept;
 
     public :
-        void runSearchQuery(const network::SearchParam &searchParam);
+        void runSearchQuery(const QString &filterName, const network::SearchParam &searchParam);
 
         void setMod(SearchMod_E searchMod_e);
         SearchMod_E getMod() const;
@@ -81,15 +82,29 @@ class SearchByRangeMax : public QObject
 
 };
 
-/*
+
 class SearchByCommune : public QObject
 {
+    Q_OBJECT
+
     private :
+        network::SearchParam searchParam;
+        QString departement;
+        QVector<QString> communeVector;
+        int cursor;
+
     public :
-        explicit SearchByCommune(QObject *parent = nullptr);
+        explicit SearchByCommune(network::SearchParam searchParam, QObject *parent = nullptr);
         ~SearchByCommune() noexcept;
+
+    public :
+        void run();
+
+   signals :
+        void stepFinished(const QString data);
+        void subStepFinished(const QString data);
+        void searchFinished();
 };
-*/
 
 } // END NAMESPACE mariongiciel::core
 
