@@ -6,8 +6,6 @@ mariongiciel::gui::SearchWidget::SearchWidget(QWidget *parent)
 {
     this->setObjectName("search-widget");
 
-    this->searchQuery = new mariongiciel::core::SearchQuery(this);
-
     this->scrollArea = new QScrollArea(this);
     this->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->scrollArea->setVerticalScrollBarPolicy (Qt::ScrollBarAsNeeded);
@@ -16,22 +14,22 @@ mariongiciel::gui::SearchWidget::SearchWidget(QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     this->searchParamManager = new SearchParamManager(this);
-
+    this->searchMod_E = mariongiciel::core::SearchMod_E::_NORMAL_;
     QGroupBox *modBox = new QGroupBox(QObject::tr("Mode de recherche"), this);
     QVBoxLayout *modLayout = new QVBoxLayout(modBox);
     QRadioButton *modNormal = new QRadioButton(QObject::tr("Recherche uniquement via les paramètre"), this);
     QObject::connect(modNormal, &QRadioButton::clicked, [this]()->void {
-        this->searchQuery->setMod(mariongiciel::core::SearchMod_E::_NORMAL_);
+        this->searchMod_E = mariongiciel::core::SearchMod_E::_NORMAL_;
     });
 
     QRadioButton *modCommune = new QRadioButton(QObject::tr("Recherche dans chaque communes"), this);
     QObject::connect(modCommune, &QRadioButton::clicked, [this]()->void {
-        this->searchQuery->setMod(mariongiciel::core::SearchMod_E::_BY_COMMUNE_);
+         this->searchMod_E = mariongiciel::core::SearchMod_E::_BY_COMMUNE_;
     });
 
     QRadioButton *modRangeMax = new QRadioButton(QObject::tr("Recherche de 0 à 1149"), this);
     QObject::connect(modRangeMax, &QRadioButton::clicked, [this]()->void {
-        this->searchQuery->setMod(mariongiciel::core::SearchMod_E::_BY_RANGE_MAX_);
+         this->searchMod_E = mariongiciel::core::SearchMod_E::_BY_RANGE_MAX_;
     });
 
     modLayout->addWidget(modNormal);
@@ -46,22 +44,24 @@ mariongiciel::gui::SearchWidget::SearchWidget(QWidget *parent)
     QPushButton *filterButton = new QPushButton(QObject::tr("Filtre"), this);
     filterLayout->addWidget(filterButton);
 
-    QLabel *filterLabel = new QLabel(QObject::tr("Aucun filtre"), this);
+    QLabel *filterLabel = new QLabel(QObject::tr("<center>Aucun filtre</center>"), this);
     filterLayout->addWidget(filterLabel);
+    filterLabel->setStyleSheet("font-size: smaller; color:red;");
 
     QObject::connect(filterButton, &QPushButton::clicked, [this, filterLabel]()->void {
            FilterDialog filterDialog(filterLabel->text());
            filterDialog.exec();
-           filterLabel->setText(filterDialog.getFilterName());
-           if(filterLabel->text() == "Aucun filtre")
+           this->currentFilterPath = filterDialog.getFilterName();
+           if(this->currentFilterPath == "Aucun filtre")
            {
                 this->currentFilterPath = "";
+               filterLabel->setText(QString("<center>" + this->currentFilterPath + "</center>"));
+               filterLabel->setStyleSheet("color:red");
            } else {
-               this->currentFilterPath = filterLabel->text();
+               filterLabel->setText(QString("<center>" + this->currentFilterPath + "</center>"));
+               filterLabel->setStyleSheet("color:lime");
            }
     });
-
-
 
     mainLayout->addWidget(this->searchParamManager);
     mainLayout->addLayout(filterLayout);
@@ -203,9 +203,18 @@ QWidget *mariongiciel::gui::SearchWidget::getDomaineWidget(QWidget *mainWidget)
     QGroupBox *domaineWidget = new QGroupBox(QObject::tr("Domaines"), mainWidget);
     QHBoxLayout *domaineLayout = new QHBoxLayout();
 
+
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_DOMAINES_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
 
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getDomaine(), domaineWidget);
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, domaineWidget);
 
     domaineLayout->addWidget(dropDown);
 
@@ -231,8 +240,17 @@ QWidget *mariongiciel::gui::SearchWidget::getcodeRomeWidget(QWidget *mainWidget)
 
     romeLayout->addWidget(nameLabel);
 
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_METIERS_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getMetiers(), romeWidget);
+
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, romeWidget);
     MultiSelectDropDown *multiDropDown = new MultiSelectDropDown(3, QIcon(global::rcs::icon::_REMOVE_), dropDown, romeWidget);
 
     romeLayout->addWidget(multiDropDown);
@@ -266,9 +284,17 @@ QWidget *mariongiciel::gui::SearchWidget::getThemeWidget(QWidget *mainWidget)
     QGroupBox *themeWidget = new QGroupBox(QObject::tr("Thème"), mainWidget);
     QHBoxLayout *themeLayout = new QHBoxLayout(themeWidget);
 
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_THEMES_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
 
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getThemes(), themeWidget);
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, themeWidget);
 
     themeLayout->addWidget(dropDown);
 
@@ -294,9 +320,17 @@ QWidget *mariongiciel::gui::SearchWidget::getAppellationWidget(QWidget *mainWidg
     QHBoxLayout *appellationLayout = new QHBoxLayout(appellationWidget);
 
 
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_APPELLATIONS_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
 
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getAppellations(), appellationWidget);
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, appellationWidget);
 
     appellationLayout->addWidget(dropDown);
 
@@ -324,8 +358,17 @@ QWidget *mariongiciel::gui::SearchWidget::getSecteurActiviteWidget(QWidget *main
     QLabel *nameLabel = new QLabel(QObject::tr("Selection de 2 valeurs maximum"), secteurActiviteWidget);
     secteurActiviteLayout->addWidget(nameLabel);
 
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_SECTEURS_ACTIVITES_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getMetiers(), secteurActiviteWidget);
+
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, secteurActiviteWidget );
     MultiSelectDropDown *multiDropDown = new MultiSelectDropDown(2, QIcon(global::rcs::icon::_REMOVE_), dropDown, secteurActiviteWidget);
 
     secteurActiviteLayout->addWidget(multiDropDown);
@@ -404,8 +447,17 @@ QWidget *mariongiciel::gui::SearchWidget::getTypeContratWidget(QWidget *mainWidg
     QLabel *nameLabel = new QLabel(QObject::tr("Selection de 10 valeurs maximum"), typeContratWidget);
     typeContratLayout->addWidget(nameLabel);
 
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_TYPES_CONTRATS_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getTypesContrats(), typeContratWidget);
+
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, typeContratWidget);
     MultiSelectDropDown *multiDropDown = new MultiSelectDropDown(10, QIcon(global::rcs::icon::_REMOVE_), dropDown, typeContratWidget);
 
     typeContratLayout->addWidget(multiDropDown);
@@ -438,8 +490,17 @@ QWidget *mariongiciel::gui::SearchWidget::getNatureContratWidget(QWidget *mainWi
     QGroupBox *natureContratWidget = new QGroupBox(QObject::tr("Nature Contrat"), mainWidget);
     QHBoxLayout *natureContratLayout = new QHBoxLayout(natureContratWidget);
 
+    mariongiciel::core::Referencial ref;
+    QStringList list;
+
+    for(auto &i : ref.getReferancial(mariongiciel::core::Referencial_E::_NATURES_CONTRATS_))
+    {
+        list.push_back(i["code"]+":"+i["libelle"]);
+    }
+
     mariongiciel::core::ReferencialOutput refOut;
-    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), refOut.getAppellations(), natureContratWidget);
+
+    DropDown *dropDown = new DropDown(QIcon(global::rcs::icon::_ACTION_), list, natureContratWidget);
     natureContratLayout->addWidget(dropDown);
 
     QObject::connect(dropDown, &DropDown::textChanged, [this](const QString &text)->void {
@@ -803,15 +864,15 @@ QWidget *mariongiciel::gui::SearchWidget::getPublieeDepuisWidget(QWidget *mainWi
 
 QWidget *mariongiciel::gui::SearchWidget::getMinCreationDateWidget(QWidget *mainWidget) // not implemented Norme ISO-8601 (YYYY-MM-DDTHH:MM:SSZ)
 {
-    QWidget *notImplementedWidget = new QWidget(mainWidget);
+    QGroupBox *minCreationDateWidget = new QGroupBox(mainWidget);
     QHBoxLayout *notImplementedLayout = new QHBoxLayout();
-    QLabel *nameLabel = new QLabel(QObject::tr("Min Creation Date"), notImplementedWidget);
-    QLabel *notImplementedLabel = new QLabel(QObject::tr("Cette fonctionnalité n'est pas implémentée"), notImplementedWidget);
+    QLabel *nameLabel = new QLabel(QObject::tr("Min Creation Date"), minCreationDateWidget);
+    QLabel *notImplementedLabel = new QLabel(QObject::tr("Cette fonctionnalité n'est pas implémentée"), minCreationDateWidget);
     notImplementedLayout->addWidget(nameLabel);
     notImplementedLayout->addWidget(notImplementedLabel);
 
-    notImplementedWidget->setLayout(notImplementedLayout);
-    return notImplementedWidget;
+    minCreationDateWidget->setLayout(notImplementedLayout);
+    return minCreationDateWidget;
 }
 
 QWidget *mariongiciel::gui::SearchWidget::getMaxCreationDateWidget(QWidget *mainWidget)// not implemented Norme ISO-8601 (YYYY-MM-DDTHH:MM:SSZ)
@@ -835,7 +896,21 @@ QWidget *mariongiciel::gui::SearchWidget::getRunSearchWidget(QWidget *mainWidget
     QPushButton *runButton = new QPushButton(QObject::tr("Executer"), this);
     runButton->setMaximumWidth(QFontMetrics(QFont("Times")).horizontalAdvance(runButton->text()));
     QObject::connect(runButton, &QPushButton::clicked, [this]()->void {
-        this->searchQuery->runSearchQuery(this->currentFilterPath, this->searchParam);
+        if(this->searchMod_E == mariongiciel::core::SearchMod_E::_BY_COMMUNE_)
+        {
+            mariongiciel::core::Referencial ref;
+            if(this->searchParam.departement.isEmpty() &&
+            !ref.valuesIsValid(mariongiciel::core::Referencial_E::_DEPARTEMENTS_, {{"code", this->searchParam.departement}}))
+            {
+                QMessageBox::warning(nullptr,
+                                    QObject::tr("ERREUR"),
+                                    QObject::tr("Le département n'est pas valide")
+                );
+                return;
+            }
+        }
+        QueryDialog queryDialog(this->currentFilterPath, this->searchParam, this->searchMod_E);
+        queryDialog.exec();
     });
 
     mainLayout->addWidget(runButton, Qt::AlignHCenter);
