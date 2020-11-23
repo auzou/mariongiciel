@@ -23,22 +23,21 @@ struct Session final
 };
 
 
-class Authentication : public QObject
+class Authentication : public RequestBase
 {
     Q_OBJECT
 
     private :
+         template<typename T> friend struct Singleton;
+
+    private :
         QTimer *refreshTimer;
-        QString url;
-        QVector<QPair<QString, QString>> header;
         QVector<QPair<QString, QString>> body;
         QString token;
         bool sessionValid;
         Session session;
         bool workInProgress;
-        explicit Authentication(QObject *parent = nullptr);
-
-        friend class AuthSingleton;
+        explicit Authentication(RequestBase *parent = nullptr);
 
     public :
         void runAuth();
@@ -50,31 +49,6 @@ class Authentication : public QObject
 
     signals :
         void authenticationFinished();
-};
-
-/*
-template <class T> class Singleton {
-
-    static Authentication* getInstance(QObject *parent = nullptr){
-        static Authentication *instance = nullptr;
-            if(instance == nullptr && parent != nullptr)
-            {
-                instance = new Authentication(parent);
-            }
-        return instance;
-    };
-};
-*/
-
-
-class AuthSingleton
-{
-    private :
-        static Authentication* instance;
-
-    public :
-        static void initInstance(QObject *parent);
-        static Authentication* GetInstance();
 };
 
 } // END NAMESPACE mariongiciel::core::network
