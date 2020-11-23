@@ -7,6 +7,7 @@
 #include <QFileInfo>
 
 #include "../global.h"
+#include "iomanagement.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -26,16 +27,9 @@ class Account : public QObject
 {
     Q_OBJECT
 
-    private :
-       QString location;
-       QString format;
-
     public :
         explicit Account(QObject *parent = nullptr);
-        bool fileExist();
-        bool fileIsValid();
-        QString getFileData();
-        void createAccount();
+        void createAccount(AccountData accoundData);
         AccountData getAccountData();
         ~Account() noexcept;
 };
