@@ -1,17 +1,15 @@
+#ifndef IOMANAGEMENT_H
+#define IOMANAGEMENT_H
+
 /**
- * \file iomanagement.cpp
+ * \file iomanagement.h
  * \brief Manage inputs output
  * \author Auzou
- * \version 0.1
- * \date last update : 29/09/2007
  *
  * This file contains all the logic for managing inputs and outputs via several static classes as well as log management
  *
  */
 
-
-#ifndef IOMANAGEMENT_H
-#define IOMANAGEMENT_H
 #include <QFile>
 #include <QDir>
 #include <QDirIterator>
@@ -101,6 +99,7 @@ class DirManagement
           * \return QVector<QFileInfo>
           */
         static QVector<QFileInfo> getFile(const QString &path);
+
 };
 
 /**
@@ -123,7 +122,7 @@ class FileManagement
           * \brief
           *
           * \param const QString &path
-          * \return bool
+          * \return true if exist or false if not exist
           */
         static bool isExist(const QString &path);
 
@@ -172,6 +171,15 @@ class FileManagement
           * \return bool
           */
         static bool moveToArchive(const QString &path, const QString &target, bool remove = true);
+
+        /**
+          * \fn static QString readLine(int line, const QString &path)
+          * \brief read line
+          *
+          * \param int line, const QString &path
+          * \return const QString
+          */
+        static const QString readLine(int line, const QString &path);
 };
 
 // name version CRLF
