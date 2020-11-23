@@ -4,11 +4,7 @@
 
 namespace mariongiciel::global {
 
-#ifdef QT_DEBUG
-     const QString _APP_LOCATION_ = "D:/Qt programmation/mariongiciel/";
-#else
     const QString _APP_LOCATION_ = "";
-#endif
 
     namespace info {
         const QString _INFO_VERSION_ = "0.1";
@@ -20,9 +16,7 @@ namespace mariongiciel::global {
 
         namespace account {
              const QString _LOCATION_ = rcs::_LOCATION_ + "account/";
-             const QString _ACCOUNT_ = _LOCATION_ + "account";
-             const QString _COMPRESS_FORMAT_ = ".mg";
-             const QString _DEFAULT_FORMAT_ = ".json";
+             const QString _ACCOUNT_ = _LOCATION_ + "account.json";
         } // END NAMESPACE account
 
         namespace icon {
@@ -57,14 +51,6 @@ namespace mariongiciel::global {
         namespace log {
             const QString _LOCATION_ = rcs::_LOCATION_ + "log/";
         } // END NAMESPACE log
-
-        namespace archive {
-            const QString _LOCATION_ = rcs::_LOCATION_ + "archive/";
-        } // END NAMESPACE archive
-
-        namespace config {
-            const QString _LOCATION_ = rcs::_LOCATION_ +"config/";
-        } // END NAMESPACE config
 
         namespace filter {
             const QString _LOCATION_ = rcs::_LOCATION_ +"filter/";
