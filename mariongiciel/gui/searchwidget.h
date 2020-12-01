@@ -12,12 +12,13 @@
 #include <QDateTime>
 #include <QGroupBox>
 #include <QCompleter>
+#include <QMessageBox>
 
 #include "dropdown/dropdown.h"
 #include "searchparammanager.h"
 #include "filterdialog.h"
+#include "querydialog.h"
 #include "../core/referencialdata.h"
-#include "../core/searchquery.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -37,7 +38,7 @@ class SearchWidget : public QWidget
         SearchParamManager *searchParamManager;
 
     private :
-        mariongiciel::core::SearchQuery *searchQuery;
+        mariongiciel::core::SearchMod_E searchMod_E;
         mariongiciel::core::network::SearchParam searchParam;
 
     public :
