@@ -174,8 +174,15 @@ mariongiciel::gui::CustomLineEdit::CustomLineEdit(const QStringList &list, QWidg
 
     this->setCompleter(completer);
 
-    connect(completer, QOverload<const QString &>::of(&QCompleter::activated),
-        [this](const QString &text){ emit currentTextActivated(text);});
+    QObject::connect(completer, QOverload<const QString &>::of(&QCompleter::activated),
+        [this](const QString &text){ emit currentTextActivated(text);
+    });
+    QObject::connect(this, &QLineEdit::textChanged, [this]()->void {
+        if(this->text().isEmpty())
+        {
+            emit currentTextActivated(QString());
+        }
+    });
 }
 
 void mariongiciel::gui::CustomLineEdit::mousePressEvent(QMouseEvent *mouseEvent)
