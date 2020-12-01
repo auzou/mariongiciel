@@ -41,7 +41,6 @@ QVector<QPair<QString, QString>> mariongiciel::core::network::Search::getSearchP
 mariongiciel::core::network::Search::Search(QObject *parent)
     : QObject(parent),
       url(QStringLiteral("https://api.emploi-store.fr/partenaire/offresdemploi/v2/offres/search?")),
-      auth(AuthSingleton::GetInstance()),
       isWait(false)
 {
     QObject::connect(this->auth, &mariongiciel::core::network::Authentication::authenticationFinished, [this]()->void {
@@ -84,6 +83,7 @@ void mariongiciel::core::network::Search::runSearch()
     );
 
     QObject::connect(request, &Request::requestFinished, [request, this](QString content, QString data)->void {
+        QRegExp reg("([0-9]-[0-9]/[0-9])");
         request->deleteLater();
         content.replace("offres", "");
         content.replace(" ", "");
