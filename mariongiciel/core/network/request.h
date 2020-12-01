@@ -25,7 +25,7 @@
 
 /**
  * \namespace mariongiciel::core::network
- * \brief Application core inline namespace
+ * \brief Network namespace
  *
  * Namespace that contains network functionality
  *
@@ -35,35 +35,10 @@
 namespace mariongiciel::core::network {
 
 /**
- * \class Request
- * \obsolete
- *
- */
-
-class Request : public QObject
-{
-    Q_OBJECT
-
-    private :
-        QNetworkAccessManager *requestManager;
-
-    public :
-        explicit Request(QObject *parent = nullptr);
-        void sendRequest(QNetworkAccessManager::Operation operation, QString url, QVector<QPair<QString,QString>> header, QVector<QPair<QString, QString>> param);
-        ~Request() noexcept;
-
-    signals :
-        void requestFinished(QString content, QString data);
-        void requestError(QString data);
-};
-
-
-/**
  * \class RequestBase
  * \brief Base class to perform queries
  * \todo Replace @comment with the real comments
  */
-
 class RequestBase : public QObject
 {
     Q_OBJECT
@@ -71,14 +46,14 @@ class RequestBase : public QObject
     private :
 
         /**
-         * \brief url
+         * @brief url
          */
         const QUrl url;
 
         /**
          * @brief headers
          */
-        QMap<QString, QString> headers;
+        QMap<QString, QString> header;
 
         /**
          * @brief queryParam
@@ -120,32 +95,32 @@ class RequestBase : public QObject
           * \param void
           * \return void
           */
-        ~RequestBase() noexcept;
+        virtual ~RequestBase() noexcept;
 
     protected:
         /**
          * @brief setHeaders
          * @param headers
          */
-        void setHeaders(QMap<QString, QString> headers);
+        void setHeader(const QMap<QString, QString> &header);
 
         /**
          * @brief setHeaders
          * @return
          */
-        const QMap<QString, QString> setHeaders() const;
+        const QMap<QString, QString> &getHeader() const;
 
         /**
          * @brief setQueryParam
          * @param queryParam
          */
-        void setQueryParam(QUrlQuery queryParam);
+        void setQueryParam(const QUrlQuery &queryParam);
 
         /**
          * @brief getQueryParam
          * @return
          */
-        const QUrlQuery getQueryParam() const;
+        const QUrlQuery &getQueryParam() const;
 
         /**
          * @brief setQueryParam
@@ -157,13 +132,13 @@ class RequestBase : public QObject
          * @brief setSslConfiguration
          * @param sslConfiguration
          */
-        void setSslConfiguration(QSslConfiguration sslConfiguration);
+        void setSslConfiguration(const QSslConfiguration &sslConfiguration);
 
         /**
          * @brief getSslConfiguration
          * @return
          */
-        QSslConfiguration getSslConfiguration() const;
+        const QSslConfiguration &getSslConfiguration() const;
 
         /**
          * @brief sendRequest
