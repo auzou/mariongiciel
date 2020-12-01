@@ -33,7 +33,16 @@ mariongiciel::gui::MenuToolBar::MenuToolBar(QWidget *parent)
 
     // signals
     QObject::connect(this->accountButton, &QToolButton::clicked, [this]()->void {emit openWidget(widget_E::_ACCOUNT_);});
-    QObject::connect(this->searchButton, &QToolButton::clicked, [this]()->void {emit openWidget(widget_E::_SEARCH_);});
+    QObject::connect(this->searchButton, &QToolButton::clicked, [this]()->void {
+        mariongiciel::core::Referencial ref;
+        if(!ref.isValidDir())
+        {
+            QMessageBox::warning(nullptr, QObject::tr("ERREUR"), QObject::tr("Téléchargez les référentiels"));
+            emit openWidget(widget_E::_REFERENCIAL_);
+        } else {
+            emit openWidget(widget_E::_SEARCH_);
+        }
+    });
     QObject::connect(this->referencialButton, &QToolButton::clicked, [this]()->void {emit openWidget(widget_E::_REFERENCIAL_);});
 }
 
