@@ -21,7 +21,7 @@ mariongiciel::gui::FilterViewDialog::FilterViewDialog(mariongiciel::core::Filter
     this->saveButton = new QPushButton(QObject::tr("Sauvegarde"), this);
     mainLayout->addWidget(this->saveButton);
     QObject::connect(this->saveButton, &QPushButton::clicked, [this]()->void {
-        if(!this->filterData->text().isEmpty() && !this->filterBy->text().isEmpty())
+        if(!this->filterData->text().isEmpty())
         {
             this->filter->addFilterReplace(this->filterNameList->currentText(), {this->filterData->text(), this->filterBy->text()});
         }
