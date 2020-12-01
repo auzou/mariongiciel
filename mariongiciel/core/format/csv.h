@@ -27,13 +27,13 @@ class CSVParser : public QObject
         QVector<CSVData> csvData;
 
 #ifdef linux
-    QString CRLF = "\n";
+    const QString _CRLF_ = "\n";
 #endif
 #ifdef WIN32
-    QString CRLF = "\n\r";
+    const QString _CRLF_ = "\n\r";
 #endif
 #ifdef __APPLE__
-    QString CRLF = "\n";
+    const QString _CRLF_ = "\n";
 #endif
 
     public :
