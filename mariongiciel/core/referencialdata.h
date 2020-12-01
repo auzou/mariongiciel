@@ -38,7 +38,7 @@ enum Referencial_E {
     _LANGUES_            = 14,
 };
 
-class Referancial : public QObject
+class Referencial : public QObject
 {
     Q_OBJECT
 
@@ -46,12 +46,17 @@ class Referancial : public QObject
         const QVector<QString> referancialName;
 
     public :
-        explicit Referancial(QObject *parent = nullptr);
-        ~Referancial() noexcept;
+        explicit Referencial(QObject *parent = nullptr);
+        ~Referencial() noexcept;
 
     public :
         const QVector<QString> getReferancialName() const;
+        const QString getName(Referencial_E referencial_e) const;
+        const QString getFileName(Referencial_E referencial_e) const;
         QVector<QMap<QString, QString>> getReferancial(Referencial_E referencial_e) const;
+        bool valuesIsValid(Referencial_E referencial_e, const QMap<QString, QString> &values);
+        bool isExist(Referencial_E referencial_e);
+        bool isValidDir();
 };
 
 
