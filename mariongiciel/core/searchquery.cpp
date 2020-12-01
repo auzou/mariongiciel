@@ -33,6 +33,9 @@ void mariongiciel::core::SearchQuery::runSearchQuery(const QString &filterName, 
     {
         case SearchMod_E::_NORMAL_ :
             this->search->runSearch(this->searchParam);
+            QObject::connect(this->search, &mariongiciel::core::network::Search::searchError,[this]()->void {
+                this->search->runSearch(this->searchParam);
+            });
         break;
         case SearchMod_E::_BY_COMMUNE_ :
         {
@@ -45,8 +48,9 @@ void mariongiciel::core::SearchQuery::runSearchQuery(const QString &filterName, 
                 QObject::connect(searchByCommun, &SearchByCommune::stepFinished, [this](const QString &data)->void {
                    this->saveData(data);
                 });
-                QObject::connect(searchByCommun, &SearchByCommune::searchFinished, [searchByCommun]()->void {
+                QObject::connect(searchByCommun, &SearchByCommune::searchFinished, [this, searchByCommun]()->void {
                    searchByCommun->deleteLater();
+                    emit searchQueryFinished();
                 });
                 searchByCommun->run();
             }
@@ -62,6 +66,7 @@ void mariongiciel::core::SearchQuery::runSearchQuery(const QString &filterName, 
             QObject::connect(searchByRangMax, &SearchByRangeMax::searchFinished, [this, searchByRangMax](const QString &data)->void {
                 this->saveData(data);
                 searchByRangMax->deleteLater();
+                emit searchQueryFinished();
             });
         }
         break;
@@ -78,15 +83,21 @@ mariongiciel::core::SearchMod_E mariongiciel::core::SearchQuery::getMod() const
     return this->searchMod_e;
 }
 
+QString mariongiciel::core::SearchQuery::getCurrentDir() const
+{
+    return this->currentDir;
+}
+
 void mariongiciel::core::SearchQuery::searchFinished(network::SearchContent content, QString data)
 {
-    Q_UNUSED(content);
+    Q_UNUSED(content)
     this->saveData(data);
+    emit searchQueryFinished();
 }
 
 bool mariongiciel::core::SearchByRangeMax::setRange()
 {
-    if((this->searchParam.rangeMax >= this->searchNumber))
+    if((this->searchParam.rangeMax >= this->searchNumber - 1))
     {
         return false;
     }
@@ -103,7 +114,7 @@ bool mariongiciel::core::SearchByRangeMax::setRange()
             }
         }
 
-        this->searchParam.rangeMin = this->searchParam.rangeMax + 1;
+        this->searchParam.rangeMin = this->searchParam.rangeMax;
         this->searchParam.rangeMax += this->currentJump;
 
         return true;
@@ -112,7 +123,7 @@ bool mariongiciel::core::SearchByRangeMax::setRange()
 
         if((this->searchParam.rangeMax + this->currentJump) > this->searchNumber)
         {
-            this->currentJump = this->searchNumber - this->searchParam.rangeMax;
+            this->currentJump = this->searchNumber - this->searchParam.rangeMax - 1;
         }
 
         this->searchParam.rangeMin = this->searchParam.rangeMax + 1;
@@ -126,7 +137,6 @@ bool mariongiciel::core::SearchByRangeMax::setRange()
 void mariongiciel::core::SearchByRangeMax::initRange()
 {
     this->searchParam.rangeMin = 0;
-
     if(this->searchNumber >= this->rangeInfo.jumpMax)
     {
         this->searchParam.rangeMax = this->rangeInfo.jumpMax - 1;
@@ -140,7 +150,7 @@ mariongiciel::core::SearchByRangeMax::SearchByRangeMax(
                                                                          QObject *parent
                                                        )
     : QObject(parent),
-      waitingTime(int(1000))
+      waitingTime(int(500))
 {
     this->requestTimer = new QTimer(this);
 
@@ -177,9 +187,6 @@ mariongiciel::core::SearchByRangeMax::SearchByRangeMax(
                 this->searchNumber = this->rangeInfo.rangeMaxMax;
             }
 
-            qDebug()<< QString::number(this->searchNumber);
-            qDebug()<< content.maxLenght;
-
             this->initRange();
             this->requestTimer->start();
         } else {
@@ -206,12 +213,14 @@ mariongiciel::core::SearchByRangeMax::~SearchByRangeMax() noexcept
 }
 
 mariongiciel::core::SearchByCommune::SearchByCommune(network::SearchParam searchParam, QObject *parent)
-    : QObject(parent), searchParam(searchParam), cursor(0)
+    : QObject(parent), searchParam(searchParam), cursor(0), waitingTime(350)
 {
+    this->timer = new QTimer(this);
+
     this->departement = searchParam.departement;
     this->searchParam.distance = 0;
     this->searchParam.departement = "";
-    Referancial ref;
+    Referencial ref;
     auto refData = ref.getReferancial(Referencial_E::_COMMUNES_);
     for(auto &i : refData)
     {
@@ -220,6 +229,10 @@ mariongiciel::core::SearchByCommune::SearchByCommune(network::SearchParam search
             this->communeVector.push_back(i["code"]);
         }
     }
+    QObject::connect(this->timer, &QTimer::timeout, [this]()->void {
+        this->timer->stop();
+        this->run();
+    });
 }
 
 mariongiciel::core::SearchByCommune::~SearchByCommune() noexcept
@@ -245,7 +258,7 @@ void mariongiciel::core::SearchByCommune::run()
         emit stepFinished(data);
         searchByRangeMax->deleteLater();
         this->cursor++;
-        this->run();
+        this->timer->start(this->waitingTime);
     });
 }
 
