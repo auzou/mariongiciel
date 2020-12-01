@@ -15,14 +15,14 @@ mariongiciel::gui::MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowIcon(QIcon(global::rcs::icon::_API_));
 
-    mariongiciel::core::network::AuthSingleton::initInstance(this);
+    //mariongiciel::core::network::AuthSingleton::initInstance(this);
 
     this->menuToolBar = new MenuToolBar(this);
     this->addToolBar(Qt::LeftToolBarArea,this->menuToolBar);
 
     this->stackedWidget = new QStackedWidget(this);
 
-    this->accountWidget = new AccountWidget(mariongiciel::core::network::AuthSingleton::GetInstance(), this->stackedWidget);
+    //this->accountWidget = new AccountWidget(mariongiciel::core::network::AuthSingleton::GetInstance(), this->stackedWidget);
 
     this->searchWidget = new SearchWidget(this->stackedWidget);
 
@@ -35,6 +35,10 @@ mariongiciel::gui::MainWindow::MainWindow(QWidget *parent)
     this->setCentralWidget(this->stackedWidget);
 
     QObject::connect(this->menuToolBar, &MenuToolBar::openWidget, [this](widget_E widget_e)->void {
+        if(widget_e == widget_E::_REFERENCIAL_)
+        {
+            this->referencialWidget->setDownloadList();
+        }
         this->stackedWidget->setCurrentIndex(widget_e);
     });
 
