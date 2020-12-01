@@ -2,7 +2,7 @@
 
 
 
-mariongiciel::core::Referancial::Referancial(QObject *parent)
+mariongiciel::core::Referencial::Referencial(QObject *parent)
     : QObject(parent),
       referancialName({
                         "domaines",
@@ -24,16 +24,27 @@ mariongiciel::core::Referancial::Referancial(QObject *parent)
 {
 }
 
-mariongiciel::core::Referancial::~Referancial() noexcept
+mariongiciel::core::Referencial::~Referencial() noexcept
 {
 
 }
-const QVector<QString> mariongiciel::core::Referancial::getReferancialName() const
+
+const QVector<QString> mariongiciel::core::Referencial::getReferancialName() const
 {
     return this->referancialName;
 }
 
-QVector<QMap<QString, QString>> mariongiciel::core::Referancial::getReferancial(Referencial_E referencial_e) const
+const QString mariongiciel::core::Referencial::getName(Referencial_E referencial_e) const
+{
+    return QString(referancialName[referencial_e]);
+}
+
+const QString mariongiciel::core::Referencial::getFileName(Referencial_E referencial_e) const
+{
+    return QString(global::rcs::referencial::_LOCATION_ + referancialName[referencial_e] + ".json");
+}
+
+QVector<QMap<QString, QString>> mariongiciel::core::Referencial::getReferancial(Referencial_E referencial_e) const
 {
     QVector<QMap<QString, QString>> dataOut;
     if(this->referancialName.size() < referencial_e)
@@ -41,7 +52,7 @@ QVector<QMap<QString, QString>> mariongiciel::core::Referancial::getReferancial(
         return dataOut;
     }
 
-    QString fileData = mariongiciel::core::FileManagement::readFile(global::rcs::referencial::_LOCATION_ + referancialName[referencial_e] + ".json");
+    QString fileData = mariongiciel::core::FileManagement::readFile(this->getFileName(referencial_e));
     if(fileData.isEmpty())
     {
         return dataOut;
@@ -76,6 +87,49 @@ QVector<QMap<QString, QString>> mariongiciel::core::Referancial::getReferancial(
     }
     return dataOut;
 }
+
+bool mariongiciel::core::Referencial::valuesIsValid(Referencial_E referencial_e, const QMap<QString, QString> &values)
+{
+
+    for(auto &i : this->getReferancial(referencial_e))
+    {
+        if(values == i)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool mariongiciel::core::Referencial::isExist(Referencial_E referencial_e)
+{
+    if(DirManagement::exist(this->getFileName(referencial_e)))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool mariongiciel::core::Referencial::isValidDir()
+{
+   if(DirManagement::getFile(global::rcs::referencial::_LOCATION_).isEmpty())
+   {
+       return false;
+   }
+
+   for(auto &i : this->getReferancialName())
+   {
+       if(!FileManagement::isExist(global::rcs::referencial::_LOCATION_ + i + ".json"))
+       {
+            return false;
+       }
+   }
+
+   return true;
+}
+
+
 
 
 // **
