@@ -19,8 +19,10 @@ void mariongiciel::core::SearchResponse::cutSearchResponse(const QString &data)
 void mariongiciel::core::SearchResponse::runConversionProcess(const QJsonArray &mainArray)
 {
     ConversionProcess conversionProcess(this->filter);
-
-    this->appendToCSV(conversionProcess.getColumnName());
+    if(!FileManagement::isExist(global::rcs::data::_LOCATION_+ this->path + "/final.csv"))
+    {
+        this->appendToCSV(conversionProcess.getColumnName());
+    }
     for(int i =0; i < mainArray.count(); i++)
     {
         this->appendToCSV(conversionProcess.getCSVData(mainArray[i].toObject()));
