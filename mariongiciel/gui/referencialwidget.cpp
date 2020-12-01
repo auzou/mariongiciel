@@ -90,8 +90,10 @@ mariongiciel::gui::ReferencialWidget::~ReferencialWidget() noexcept
 
 void mariongiciel::gui::ReferencialWidget::downloadSlot()
 {
+    /*
     ReferencialDialog ref(mariongiciel::core::network::AuthSingleton::GetInstance());
     ref.exec();
     this->setDownloadList();
     emit referencialChanged();
+    */
 }
