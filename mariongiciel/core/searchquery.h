@@ -5,6 +5,7 @@
 #include "referencialdata.h"
 #include "response.h"
 
+
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
@@ -41,8 +42,14 @@ class SearchQuery : public QObject
         void setMod(SearchMod_E searchMod_e);
         SearchMod_E getMod() const;
 
+        QString getCurrentDir() const;
+
     private slots :
-        void searchFinished(network::SearchContent, QString data);
+        void searchFinished(network::SearchContent content, QString data);
+
+    signals :
+        void searchQueryFinished();
+        void searchQueryStepFinished(const QString &data);
 };
 
 
@@ -55,7 +62,6 @@ class SearchByRangeMax : public QObject
             const int rangeMinMax = 1000;
             const int rangeMaxMax = 1149;
             const int jumpMax = 150;
-            const int jumpMin = 0;
         } rangeInfo;
 
     private :
@@ -77,9 +83,8 @@ class SearchByRangeMax : public QObject
         ~SearchByRangeMax() noexcept;
 
     signals :
-        void stepFinished(const QString &data);
-        void searchFinished(const QString &data);
-
+        void stepFinished(QString data);
+        void searchFinished(QString data);
 };
 
 
@@ -92,6 +97,8 @@ class SearchByCommune : public QObject
         QString departement;
         QVector<QString> communeVector;
         int cursor;
+        const int waitingTime;
+        QTimer *timer;
 
     public :
         explicit SearchByCommune(network::SearchParam searchParam, QObject *parent = nullptr);
@@ -101,8 +108,8 @@ class SearchByCommune : public QObject
         void run();
 
    signals :
-        void stepFinished(const QString data);
-        void subStepFinished(const QString data);
+        void stepFinished(QString data);
+        void subStepFinished(QString data);
         void searchFinished();
 };
 
