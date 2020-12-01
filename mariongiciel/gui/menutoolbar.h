@@ -2,8 +2,10 @@
 #define MENUTOOLBAR_H
 #include <QToolBar>
 #include <QToolButton>
+#include <QMessageBox>
 
 #include "global.h"
+#include "core/referencialdata.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
